@@ -15,7 +15,7 @@ reg_restore:
 
   //Restore the registers not automatically saved by the interrupt
   //from the storage buffer
-  ldmia r0, {r1,r4-r12}
+  ldm r0, {r1,r4-r12}
 
   //Move r1 into sp to restore the PSP
   msr psp, r1

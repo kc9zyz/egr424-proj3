@@ -68,7 +68,6 @@ createThread:
   //Store full descending the initial variables, into the process stack
   STMFD r2!, {r5-r12}
 
-  str r2, [r1]
   //*** Setup the buffer ***
 
   //Store the registers not automatically saved by the interrupt

@@ -16,7 +16,7 @@
 typedef struct {
   int active;       // non-zero means thread is allowed to run
   char *stack;      // pointer to TOP of stack (highest memory location)
-  int state[23];    // saved state for our custom save and restore functions
+  int state[40];    // saved state for our custom save and restore functions
 } threadStruct_t;
 
 // thread_t is a pointer to function with no parameters and
@@ -51,9 +51,8 @@ unsigned currThread;    // The currently active thread
 // of the threads.
 void scheduler_Handler(void)
 {
-  iprintf("TICK\n");
 	//disable interrupts
-  IntMasterDisable();
+   IntMasterDisable();
 
 	//save the state of the current thread
 	//on the array of 10 elements
@@ -61,7 +60,7 @@ void scheduler_Handler(void)
 
 	//identify the next active thread
   if (! threads[currThread].active) {
-    free(threads[currThread].stack - STACK_SIZE);
+   free(threads[currThread].stack - STACK_SIZE);
   }
 
   unsigned i;
@@ -80,12 +79,13 @@ void scheduler_Handler(void)
 
     if (threads[currThread].active) {
       //enable interrupts
-      IntMasterEnable();
+       IntMasterEnable();
+      //Reset systick so that the next interrupt will delay as usual
+       NVIC_ST_CURRENT_R = 0;
+       iprintf("%d\r\n"),sizeof(threads[currThread].state);
       //restore the state of the next thread
     	//from the array of 10 elements
       reg_restore(threads[currThread].state);
-
-
 
     } else {
       i--;
@@ -101,31 +101,25 @@ void scheduler_Handler(void)
 // like a standard function return back to the caller of yield().
 void yield(void)
 {
-   asm volatile ("svc #1");
+    asm volatile ("svc #1");
 }
 
 void handleSVC(int code)
 {
-  switch (code & 0xFF) {
-    case 1:
       //Force Systick interrupt
       //Enable SYSTICK interrupt pend
       NVIC_INT_CTRL_R |= NVIC_INT_CTRL_PENDSTSET;
       //Reset systick so that the next interrupt will delay as usual
       NVIC_ST_CURRENT_R = 0;
-      break;
-    default:
-      iprintf("UNKNOWN SVC CALL\r\n");
-      break;
-  }
 }
 void SVChandler(void)
 {
-  asm volatile(
-                  "LDR R1,[SP,#24]\n"
-                  "LDRB R0,[R1,#-2]\n"
-                  "B handleSVC "
-                );
+  // asm volatile(
+  //                 "LDR R1,[SP,#24]\n"
+  //                 "LDRB R0,[R1,#-2]\n"
+  //                 "B handleSVC "
+  //               );
+  handleSVC(1);
 }
 
 // This is the starting point for all threads. It runs in user thread
@@ -135,16 +129,17 @@ void SVChandler(void)
 // start here.
 void threadStarter(void)
 {
-  iprintf("TOCK\n");
+
   // Call the entry point for this thread. The next line returns
   // only when the thread exits.
   (*(threadTable[currThread]))();
 
+  iprintf("Thread %d ended\r\n",currThread);
   // Do thread-specific cleanup tasks. Currently, this just means marking
   // the thread as inactive. Do NOT free the stack here because we're
   // still using it! Remember, this function runs in user thread context.
   threads[currThread].active = 0;
-
+  iprintf("Thread %d inactive\r\n",currThread);
   // This yield returns to the scheduler and never returns back since
   // the scheduler identifies the thread as inactive.
   yield();

@@ -82,7 +82,6 @@ void scheduler_Handler(void)
        IntMasterEnable();
       //Reset systick so that the next interrupt will delay as usual
        NVIC_ST_CURRENT_R = 0;
-       iprintf("%d\r\n"),sizeof(threads[currThread].state);
       //restore the state of the next thread
     	//from the array of 10 elements
       reg_restore(threads[currThread].state);

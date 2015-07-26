@@ -72,7 +72,7 @@ createThread:
 
   //Store the registers not automatically saved by the interrupt
   //into the storage buffer
-  stm r0, {r2,r4-r12}
+  stmea r0!, {r2,r4-r12}
 
 
   //restore registers from stack

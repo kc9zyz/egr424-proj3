@@ -212,6 +212,21 @@ FaultISR(void)
 static void
 IntDefaultHandler(void)
 {
+  int R0,R1,R2,R3,LR,SP;
+  asm volatile("MOV %0, r0 ":"=r" (R0));
+  asm volatile("MOV %0, r1 ":"=r" (R1));
+  asm volatile("MOV %0, r2 ":"=r" (R2));
+  asm volatile("MOV %0, r3 ":"=r" (R3));
+  asm volatile("MOV %0, lr ":"=r" (LR));
+  asm volatile("MOV %0, sp ":"=r" (SP));
+  RIT128x96x4StringDraw("FAULT, BITCH",       32,  0, 15);
+
+  iprintf("r0: %x\r\n",R0 );
+  iprintf("r1: %x\r\n",R1 );
+  iprintf("r2: %x\r\n",R2 );
+  iprintf("r3: %x\r\n",R3 );
+  iprintf("lr: %x\r\n",LR );
+  iprintf("sp: %x\r\n",SP );
     //
     // Go into an infinite loop.
     //

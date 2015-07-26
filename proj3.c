@@ -60,8 +60,6 @@ void scheduler_Handler(void)
 
   unsigned i;
 
-  currThread = -1;
-
   // We saved the state of the scheduler, now find the next
   // runnable thread in round-robin fashion. The 'i' variable
   // keeps track of how many runnable threads there are. If we
@@ -70,8 +68,8 @@ void scheduler_Handler(void)
   i = NUM_THREADS;
   do {
     // Round-robin scheduler
-    if (++currThread == NUM_THREADS) {
-      currThread = 0;
+    if (++currThread >= NUM_THREADS) {
+      currThread = 1;
     }
 
     if (threads[currThread].active) {
@@ -79,20 +77,24 @@ void scheduler_Handler(void)
     	//from the array of 10 elements
       reg_restore(threads[currThread].state);
 
+      //enable interrupts
+      IntMasterEnable();
+
     	//fake a return from the handler to use
     	//thread mode and process stack
       asm volatile("LDR LR, =0xFFFFFFFD\n"
                     "BX LR\n");
-
-    	//enable interrupts
-      IntMasterEnable();
     } else {
       i--;
     }
   } while (i > 0);
 
-  // No active threads left. Leave the scheduler, hence the program.
-  exit(0);
+  // No active threads left except our idle thread so jump to that.
+  reg_restore(threads[0].state);
+  //fake a return from the handler to use
+  //thread mode and process stack
+  asm volatile("LDR LR, =0xFFFFFFFD\n"
+                "BX LR\n");
 }
 
 // This function is called from within user thread context. It executes
@@ -136,50 +138,6 @@ void threadStarter(void)
 // threadStarter() for each thread).
 extern void createThread(jmp_buf buf, char *stack);
 
-// This is the "main loop" of the program.
-void scheduler(void)
-{
-  unsigned i;
-
-  currThread = -1;
-
-  do {
-    // It's kinda inefficient to call setjmp() every time through this
-    // loop, huh? I'm sure your code will be better.
-    if (setjmp(scheduler_buf)==0) {
-
-      // We saved the state of the scheduler, now find the next
-      // runnable thread in round-robin fashion. The 'i' variable
-      // keeps track of how many runnable threads there are. If we
-      // make a pass through threads[] and all threads are inactive,
-      // then 'i' will become 0 and we can exit the entire program.
-      i = NUM_THREADS;
-      do {
-        // Round-robin scheduler
-        if (++currThread == NUM_THREADS) {
-          currThread = 0;
-        }
-
-        if (threads[currThread].active) {
-          longjmp(threads[currThread].state, 1);
-        } else {
-          i--;
-        }
-      } while (i > 0);
-
-      // No active threads left. Leave the scheduler, hence the program.
-      return;
-
-    } else {
-      // yield() returns here. Did the thread that just yielded to us exit? If
-      // so, clean up its entry in the thread table.
-      if (! threads[currThread].active) {
-        free(threads[currThread].stack - STACK_SIZE);
-      }
-    }
-  } while (1);
-}
-
 void main(void)
 {
   unsigned i;
@@ -188,9 +146,8 @@ void main(void)
   SysCtlClockSet(SYSCTL_SYSDIV_1 | SYSCTL_USE_OSC | SYSCTL_OSC_MAIN |
                  SYSCTL_XTAL_8MHZ);
 
-  // Initialize the OLED display and write status.
+  // Initialize the OLED display.
   RIT128x96x4Init(1000000);
-  RIT128x96x4StringDraw("Scheduler Demo",       20,  0, 15);
 
   // Enable the peripherals used by this example.
   SysCtlPeripheralEnable(SYSCTL_PERIPH_UART0);
@@ -216,7 +173,7 @@ void main(void)
       exit(1);
     }
 
-    // After createThread() executes, we can execute a longjmp()
+    // After createThread() executes, we can execute a jump
     // to threads[i].state and the thread will begin execution
     // at threadStarter() with its own stack.
     createThread(threads[i].state, threads[i].stack);
@@ -225,8 +182,19 @@ void main(void)
   // Initialize the global thread lock
   lock_init(&uartlock);
 
+  // Initialize curr_thread to idle thread 0
+  curr_thread = 0;
+
   // Start running coroutines
-  scheduler();
+  // Setup SysTic clock to timeout every 0.5s with interrupt enabled
+  IntMasterEnable();
+
+  NVIC_ST_CTRL_R = 0;
+  NVIC_ST_RELOAD_R = 8000;
+  NVIC_ST_CURRENT_R = 0;
+  NVIC_ST_CTRL_R |= 0x00000007;
+
+  while(1);
 
   // If scheduler() returns, all coroutines are inactive and we return
   // from main() hence exit() should be called implicitly (according to

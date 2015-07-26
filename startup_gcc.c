@@ -21,6 +21,7 @@ static void IntDefaultHandler(void);
 //*****************************************************************************
 extern int main(void);
 extern void scheduler_Handler(void);
+extern void SVChandler(void);
 
 //*****************************************************************************
 //
@@ -43,7 +44,7 @@ void (* const g_pfnVectors[])(void) =
     0,                                      // Reserved
     0,                                      // Reserved
     0,                                      // Reserved
-    IntDefaultHandler,                      // SVCall handler
+    SVChandler,                      // SVCall handler
     IntDefaultHandler,                      // Debug monitor handler
     0,                                      // Reserved
     IntDefaultHandler,                      // The PendSV handler

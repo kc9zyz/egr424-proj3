@@ -35,9 +35,6 @@ createThread:
 
   //*** Setup the stack to fit interrupt return format***
 
-  //load the stack pointer from r1
-  ldr r2, [r1]
-
   //Setup xPSR
   mov r12, #0x0000
   movt r12, #0x0100
@@ -45,8 +42,8 @@ createThread:
   //setup PC to start at threadStarter
   ldr  r11, .L0
 
-  //Setup link register
-  mov r10, #0
+  //Setup link register to initial value
+  ldr  r10, =#0xFFFFFFFF
 
   //Setup r12
   mov r9, #0

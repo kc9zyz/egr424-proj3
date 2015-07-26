@@ -8,10 +8,10 @@
 #include "driverlib/sysctl.h"
 #include "driverlib/uart.h"
 #include "rit128x96x4.h"
+#include "inc/lm3s6965.h"
 #include "scheduler.h"
 
 #define STACK_SIZE 4096   // Amount of stack space for each thread
-
 
 typedef struct {
   int active;       // non-zero means thread is allowed to run
@@ -51,6 +51,7 @@ unsigned currThread;    // The currently active thread
 // of the threads.
 void scheduler_Handler(void)
 {
+  iprintf("TICK\n");
 	//disable interrupts
   IntMasterDisable();
 
@@ -88,7 +89,7 @@ void scheduler_Handler(void)
     	//fake a return from the handler to use
     	//thread mode and process stack
       asm volatile("LDR LR, =0xFFFFFFFD\n"
-                    "BX LR\n");
+                    "BX LR");
     } else {
       i--;
     }
@@ -107,13 +108,31 @@ void scheduler_Handler(void)
 // like a standard function return back to the caller of yield().
 void yield(void)
 {
-  if (setjmp(threads[currThread].state) == 0) {
-    // yield() called from the thread, jump to scheduler context
-    longjmp(scheduler_buf, 1);
-  } else {
-    // longjmp called from scheduler, return to thread context
-    return;
+   asm volatile ("svc #1");
+}
+
+void handleSVC(int code)
+{
+  switch (code & 0xFF) {
+    case 1:
+      //Force Systick interrupt
+      //Enable SYSTICK interrupt pend
+      NVIC_INT_CTRL_R |= NVIC_INT_CTRL_PENDSTSET;
+      //Reset systick so that the next interrupt will delay as usual
+      NVIC_ST_CURRENT_R = 0;
+      break;
+    default:
+      iprintf("UNKNOWN SVC CALL\r\n");
+      break;
   }
+}
+void SVChandler(void)
+{
+  asm volatile(
+                  "LDR R1,[SP,#24]\n"
+                  "LDRB R0,[R1,#-2]\n"
+                  "B handleSVC "
+                );
 }
 
 // This is the starting point for all threads. It runs in user thread
@@ -123,6 +142,7 @@ void yield(void)
 // start here.
 void threadStarter(void)
 {
+  iprintf("TOCK\n");
   // Call the entry point for this thread. The next line returns
   // only when the thread exits.
   (*(threadTable[currThread]))();
@@ -188,7 +208,7 @@ void main(void)
   lock_init(&uartlock);
 
   // Initialize curr_thread to idle thread 0
-  curr_thread = 0;
+  currThread = 0;
 
   // Start running coroutines
   // Setup SysTic clock to timeout every 0.5s with interrupt enabled
@@ -197,7 +217,7 @@ void main(void)
   NVIC_ST_CTRL_R = 0;
   NVIC_ST_RELOAD_R = 8000;
   NVIC_ST_CURRENT_R = 0;
-  NVIC_ST_CTRL_R |= 0x00000007;
+  NVIC_ST_CTRL_R = 0x00000007;
 
   while(1);
 

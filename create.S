@@ -23,6 +23,8 @@
     .type createThread,function
     .global createThread
 createThread:
+  //Save registers to stack
+  push {r4-r9, r10, r11}
 
   //*** Setup the buffer ***
 
@@ -31,19 +33,56 @@ createThread:
   stmea r0!, {r4-r12}
 
 
-
   //*** Setup the stack to fit interrupt return format***
 
   //load the stack pointer from r1
   ldr r2, [r1]
 
   //Setup xPSR
-  mov.w r12 0x0
-  movt r12 0x100
-  ldr  r11, .L0 //load the address of threadStarter
+  mov r12, #0x0000
+  movt r12, #0x0100
+
+  //setup PC to start at threadStarter
+  ldr  r11, .L0
+
+  //Setup link register
+  mov r10, #0
+
+  //Setup r12
+  mov r9, #0
+
+  //Setup r3
+  mov r8, #0
+
+  //Setup r2
+  mov r7, #0
+
+  //Setup r1
+  mov r6, #0
+
+  //Setup r0
+  mov r5, #0
+
+/* This is the format of the process stack initially
+  xPSR
+  PC
+  LR
+  R12
+  R3
+  R2
+  R1
+  R0
+*/
+  //Store full descending the initial variables, into the process stack
+  STMFD r1!, {r5-r12}
 
   //Store r1 in the last location of the buff because it contains the sp
   stmea r0!, {r1}
+
+  //restore registers from stack
+  pop {r4-r9, r10, r11}
+
+  //Return
 
   bx      lr
 

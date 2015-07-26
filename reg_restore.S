@@ -21,7 +21,7 @@ reg_restore:
   ldmia r0!, {r4-r12}
 
   //Move r1 into sp to restore the PSP
-  mov sp, r1
+  msr psp, r1
 
   //Return to the calling address
   bx lr

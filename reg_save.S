@@ -13,7 +13,7 @@
 
 reg_save:
   //Move the PSP into r1 for storing to the buffer
-  mov r1, sp
+  mrs r1, psp
 
   //Store the registers not automatically saved by the interrupt
   //into the storage buffer

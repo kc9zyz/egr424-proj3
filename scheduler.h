@@ -11,4 +11,7 @@ extern void yield(void);
 extern unsigned lock(unsigned threadlock);
 extern void unlock(unsigned threadlock);
 extern void unlock_force(unsigned threadlock);
+
+extern void reg_save(int *state);
+extern void reg_restore(int *state);
 #endif // _SCHEDULER_H_

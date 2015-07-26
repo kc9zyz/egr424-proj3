@@ -12,7 +12,7 @@
  *   The C prototype for this function call is:
  *       createThread(threads[i].state, threads[i].stack)
  *   thus:
- *       R0 <-- state (a setjmp()-style jump buffer)
+ *       R0 <-- state (an array to store registers)
  *       R1 <-- stack (address of top-of-stack)
  */
     .syntax unified
@@ -22,25 +22,25 @@
     .thumb_func
     .type createThread,function
     .global createThread
-createThread:  
+createThread:
 
   /* Save registers in the jump buffer. Their values are
      not important when the thread is first created. This line is the same as
-     the first two lines of setjmp(), except we don't save SP and LR since we 
-     want to set these to our own values. Really, the only point of this 
-     instruction is to advance R0 to the right location in the jump buffer for 
+     the first two lines of setjmp(), except we don't save SP and LR since we
+     want to set these to our own values. Really, the only point of this
+     instruction is to advance R0 to the right location in the jump buffer for
      pointing to SP (without having to do any math :-) */
 
     stmea  r0!, { r4-r10, r11 }
-  
+
   /* Now we save SP and LR in that order. SP is the R1 parameter, and we have
    * to get the address of threadStarter() into a higher register (so they are
    * placed in the jump buffer in the right order). */
 
     ldr     R2, .L0
     stmea   R0!, { R1, R2 }   @ Store "SP" and "LR" for the new thread
-    
+
     bx      lr
-    
+
 .L0:
     .word   threadStarter

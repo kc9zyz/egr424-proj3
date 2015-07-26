@@ -82,7 +82,13 @@ void scheduler_Handler(void)
 
     	//fake a return from the handler to use
     	//thread mode and process stack
-      asm volatile("LDR LR, =0xFFFFFFFD\n"
+
+      //EXEC_RETURN
+      // 0xFFFFFFFD
+      //                 Return to Thread mode.
+      //                 Exception return gets state from the process stack.
+      //                 Execution uses PSP after return.
+      asm volatile("MOV LR, #0xFFFFFFFD\n"
                     "BX LR\n");
     } else {
       i--;

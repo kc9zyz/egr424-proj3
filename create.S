@@ -26,12 +26,7 @@ createThread:
   //Save registers to stack
   push {r4-r9, r10, r11}
 
-  //*** Setup the buffer ***
-
-  //Store the registers not automatically saved by the interrupt
-  //into the storage buffer
-  stmea r0!, {r4-r12}
-
+  ldr r2, [r1]
 
   //*** Setup the stack to fit interrupt return format***
 
@@ -71,10 +66,15 @@ createThread:
   R0
 */
   //Store full descending the initial variables, into the process stack
-  STMFD r1!, {r5-r12}
+  STMFD r2!, {r5-r12}
 
-  //Store r1 in the last location of the buff because it contains the sp
-  stmea r0!, {r1}
+  str r2, [r1]
+  //*** Setup the buffer ***
+
+  //Store the registers not automatically saved by the interrupt
+  //into the storage buffer
+  stm r0, {r2,r4-r12}
+
 
   //restore registers from stack
   pop {r4-r9, r10, r11}

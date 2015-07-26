@@ -79,17 +79,14 @@ void scheduler_Handler(void)
     }
 
     if (threads[currThread].active) {
+      //enable interrupts
+      IntMasterEnable();
       //restore the state of the next thread
     	//from the array of 10 elements
       reg_restore(threads[currThread].state);
 
-      //enable interrupts
-      IntMasterEnable();
 
-    	//fake a return from the handler to use
-    	//thread mode and process stack
-      asm volatile("LDR LR, =0xFFFFFFFD\n"
-                    "BX LR");
+
     } else {
       i--;
     }
@@ -97,10 +94,6 @@ void scheduler_Handler(void)
 
   // No active threads left except our idle thread so jump to that.
   reg_restore(threads[0].state);
-  //fake a return from the handler to use
-  //thread mode and process stack
-  asm volatile("LDR LR, =0xFFFFFFFD\n"
-                "BX LR\n");
 }
 
 // This function is called from within user thread context. It executes
@@ -161,7 +154,7 @@ void threadStarter(void)
 // initial jump-buffer (as would setjmp()) but with our own values
 // for the stack (passed to createThread()) and LR (always set to
 // threadStarter() for each thread).
-extern void createThread(jmp_buf buf, char *stack);
+extern void createThread(int *buf, char **stack);
 
 void main(void)
 {
@@ -201,7 +194,7 @@ void main(void)
     // After createThread() executes, we can execute a jump
     // to threads[i].state and the thread will begin execution
     // at threadStarter() with its own stack.
-    createThread(threads[i].state, threads[i].stack);
+    createThread(threads[i].state, &threads[i].stack);
   }
 
   // Initialize the global thread lock

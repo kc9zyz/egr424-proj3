@@ -1,5 +1,4 @@
-docs/
 *.bin
 *.elf
 *.map
-proj3.bin
+docs/

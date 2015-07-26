@@ -4,6 +4,7 @@
 #include "inc/hw_memmap.h"
 #include "inc/hw_types.h"
 #include "driverlib/gpio.h"
+#include "driverlib/interrupt.h"
 #include "driverlib/sysctl.h"
 #include "driverlib/uart.h"
 #include "rit128x96x4.h"
@@ -40,6 +41,57 @@ static thread_t threadTable[] = {
 static jmp_buf scheduler_buf;   // saves the state of the scheduler
 static threadStruct_t threads[NUM_THREADS]; // the thread table
 unsigned currThread;    // The currently active thread
+
+// This is the handler for the systic timer that handles the scheduling 
+// of the threads.
+void scheduler_Handler(void)
+{
+	//disable interrupts
+  IntMasterDisable();
+
+	//save the state of the current thread
+	//on the array of 10 elements
+  reg_save(threads[currThread].state);
+
+	//identify the next active thread
+  if (! threads[currThread].active) {
+    free(threads[currThread].stack - STACK_SIZE);
+  }
+
+  unsigned i;
+
+  currThread = -1;
+
+  // We saved the state of the scheduler, now find the next
+  // runnable thread in round-robin fashion. The 'i' variable
+  // keeps track of how many runnable threads there are. If we
+  // make a pass through threads[] and all threads are inactive,
+  // then 'i' will become 0 and we can exit the entire program.
+  i = NUM_THREADS;
+  do {
+    // Round-robin scheduler
+    if (++currThread == NUM_THREADS) {
+      currThread = 0;
+    }
+
+    if (threads[currThread].active) {
+      //restore the state of the next thread
+    	//from the array of 10 elements
+      reg_restore(threads[currThread].state);
+
+    	//fake a return from the handler to use
+    	//thread mode and process stack
+
+    	//enable interrupts
+      IntMasterEnable();
+    } else {
+      i--;
+    }
+  } while (i > 0);
+
+  // No active threads left. Leave the scheduler, hence the program.
+  exit(0);
+}
 
 // This function is called from within user thread context. It executes
 // a jump back to the scheduler. When the scheduler returns here, it acts

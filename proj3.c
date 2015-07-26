@@ -11,34 +11,11 @@
 
 #define STACK_SIZE 4096   // Amount of stack space for each thread
 
-// This is the lock variable used by all threads. Interface functions
-// for it are:
-//      void lock_init(unsigned *threadlockptr);        // You write this
-//      unsigned lock_acquire(unsigned *threadlockptr); // Shown in class
-//      void lock_release(unsigned *threadlockptr);     // You write this
-unsigned threadlock;
-
-// These are functions you have to write. Right now they are do-nothing stubs.
-void lock_init(unsigned *lock)
-{
-  asm volatile (
-               "mov r1, #1\n"
-               "str       r1, [r0]");
-}
-
-extern unsigned lock_acquire(unsigned *lock);
-
-void lock_release(unsigned *lock)
-{
-  asm volatile (
-               "mov r1, #1\n"
-               "str       r1, [r0]");
-}
 
 typedef struct {
   int active;       // non-zero means thread is allowed to run
   char *stack;      // pointer to TOP of stack (highest memory location)
-  jmp_buf state;    // saved state for longjmp()
+  int state[23];    // saved state for longjmp()
 } threadStruct_t;
 
 // thread_t is a pointer to function with no parameters and
@@ -111,7 +88,7 @@ void scheduler(void)
   unsigned i;
 
   currThread = -1;
-  
+
   do {
     // It's kinda inefficient to call setjmp() every time through this
     // loop, huh? I'm sure your code will be better.
@@ -192,7 +169,7 @@ void main(void)
   }
 
   // Initialize the global thread lock
-  lock_init(&threadlock);
+  lock_init(&uartlock);
 
   // Start running coroutines
   scheduler();
@@ -206,9 +183,9 @@ void main(void)
 
 /*
  * Compile with:
- * ${CC} -o lockdemo.elf -I${STELLARISWARE} -L${STELLARISWARE}/driverlib/gcc 
- *     -Tlinkscript.x -Wl,-Map,lockdemo.map -Wl,--entry,ResetISR 
- *     lockdemo.c create.S threads.c startup_gcc.c syscalls.c rit128x96x4.c 
+ * ${CC} -o lockdemo.elf -I${STELLARISWARE} -L${STELLARISWARE}/driverlib/gcc
+ *     -Tlinkscript.x -Wl,-Map,lockdemo.map -Wl,--entry,ResetISR
+ *     lockdemo.c create.S threads.c startup_gcc.c syscalls.c rit128x96x4.c
  *     -ldriver
  */
 // vim: expandtab ts=2 sw=2 cindent

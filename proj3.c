@@ -16,7 +16,7 @@
 typedef struct {
   int active;       // non-zero means thread is allowed to run
   char *stack;      // pointer to TOP of stack (highest memory location)
-  int state[23];    // saved state for longjmp()
+  int state[23];    // saved state for our custom save and restore functions
 } threadStruct_t;
 
 // thread_t is a pointer to function with no parameters and
@@ -44,7 +44,6 @@ static thread_t threadTable[] = {
 
 // These static global variables are used in scheduler(), in
 // the yield() function, and in threadStarter()
-static jmp_buf scheduler_buf;   // saves the state of the scheduler
 static threadStruct_t threads[NUM_THREADS]; // the thread table
 unsigned currThread;    // The currently active thread
 
@@ -88,13 +87,7 @@ void scheduler_Handler(void)
 
     	//fake a return from the handler to use
     	//thread mode and process stack
-
-      //EXEC_RETURN
-      // 0xFFFFFFFD
-      //                 Return to Thread mode.
-      //                 Exception return gets state from the process stack.
-      //                 Execution uses PSP after return.
-      asm volatile("MOV LR, #0xFFFFFFFD\n"
+      asm volatile("LDR LR, =0xFFFFFFFD\n"
                     "BX LR\n");
     } else {
       i--;

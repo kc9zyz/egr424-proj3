@@ -42,7 +42,7 @@ static jmp_buf scheduler_buf;   // saves the state of the scheduler
 static threadStruct_t threads[NUM_THREADS]; // the thread table
 unsigned currThread;    // The currently active thread
 
-// This is the handler for the systic timer that handles the scheduling 
+// This is the handler for the systic timer that handles the scheduling
 // of the threads.
 void scheduler_Handler(void)
 {
@@ -81,6 +81,8 @@ void scheduler_Handler(void)
 
     	//fake a return from the handler to use
     	//thread mode and process stack
+      asm volatile("LDR LR, =0xFFFFFFFD\n"
+                    "BX LR\n");
 
     	//enable interrupts
       IntMasterEnable();

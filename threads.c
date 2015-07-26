@@ -1,6 +1,13 @@
 #include <stdio.h>
 #include "scheduler.h"
 
+// Thread 0 is currently an idle thread for the system to fall into
+// when there are no other active threads
+void thread0(void)
+{
+  while(1);
+}
+
 void thread1(void)
 {
   while (1) {
@@ -39,4 +46,16 @@ void thread2(void)
   //   tryCount = 0;
   //   unlockUart_force(); //Force unlock the uart if it fails 10 times
   // }
+}
+
+// This thread will contain LED flashing commands
+void thread3(void)
+{
+  yield();
+}
+
+// This thread will contain OLED commands
+void thread4(void)
+{
+  yield();
 }

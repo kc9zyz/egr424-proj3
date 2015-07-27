@@ -1,47 +1,47 @@
 #include "scheduler.h"
-unsigned count = 0;
+unsigned countLock = 0;
 unsigned lockedThread = 0;
 
 //Locks
 unsigned uartlock;
 
-//Locks a resource by upcounting
-unsigned lock(unsigned threadlock)
+//Locks a resource by upcountLocking
+unsigned lock(unsigned *threadlock)
 {
   unsigned ret = 0;
-  if(count) //resource is locked
+  if(countLock) //resource is locked
   {
     //Check if the thread asking for the lock
     //is the thread that initially locked the resource
     if(lockedThread == currThread)
-      count++; //Increase the locked count
+      countLock++; //Increase the locked count
   }
   else //resource is unlocked
   {
-    if(lock_acquire(&threadlock)) //Try to get a lock
+    if(lock_acquire(threadlock)) //Try to get a lock
     {
       lockedThread = currThread; //Set the locking thread to this thread
-      count = 1; //Set the initial lock count to 1
+      countLock = 1; //Set the initial lock count to 1
       ret = 1;
     }
   }
   return ret;
 }
 //Unlocks a resource by downcounting until 0
-void unlock(unsigned threadlock)
+void unlock(unsigned *threadlock)
 {
   //check to see if the thread is the original locker
   if(lockedThread == currThread)
-    count--; //reduce the count
-  if(!count) //if count is 0, unlock the resource
-    lock_release(&threadlock);
+    countLock--; //reduce the count
+  if(!countLock) //if count is 0, unlock the resource
+    lock_release(threadlock);
 }
 
 //Forces an unlock of the resource
-void unlock_force(unsigned threadlock)
+void unlock_force(unsigned *threadlock)
 {
-  lock_release(&threadlock);
-  count = 0;
+  lock_release(threadlock);
+  countLock = 0;
   lockedThread = 0;
 }
 

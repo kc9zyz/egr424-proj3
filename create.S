@@ -26,8 +26,6 @@ createThread:
   //Save registers to stack
   push {r4-r9, r10, r11}
 
-  ldr r2, [r1]
-
   //*** Setup the stack to fit interrupt return format***
 
   //Setup xPSR
@@ -66,13 +64,13 @@ createThread:
   R0
 */
   //Store full descending the initial variables, into the process stack
-  STMFD r2!, {r5-r12}
+  STMFD r1!, {r5-r12}
 
   //*** Setup the buffer ***
 
   //Store the registers not automatically saved by the interrupt
   //into the storage buffer
-  stmea r0!, {r2,r4-r12}
+  stmea r0!, {r1,r4-r12}
 
 
   //restore registers from stack

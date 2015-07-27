@@ -17,7 +17,7 @@ reg_save:
 
   //Store the registers not automatically saved by the interrupt
   //into the storage buffer
-  stmea r0, {r1,r4-r12}
+  stmia r0, {r1,r4-r12}
 
   //Return to the calling address
   bx lr

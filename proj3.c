@@ -16,9 +16,8 @@
 typedef struct {
   int active;       // non-zero means thread is allowed to run
   char *stack;      // pointer to TOP of stack (highest memory location)
-  int state[10];    // saved state for our custom save and restore functions
+  int state[40];    // saved state for our custom save and restore functions
 } threadStruct_t;
-volatile int switchCount = 0;
 // thread_t is a pointer to function with no parameters and
 // no return value...i.e., a user-space thread.
 typedef void (*thread_t)(void);
@@ -46,36 +45,26 @@ static thread_t threadTable[] = {
 // These static global variables are used in scheduler(), in
 // the yield() function, and in threadStarter()
 static threadStruct_t threads[NUM_THREADS]; // the thread table
-unsigned currThread;    // The currently active thread
+int currThread;    // The currently active thread
+void printFault();
 
 // This is the handler for the systic timer that handles the scheduling
 // of the threads.
+
 void scheduler_Handler(void)
 {
-  iprintf("%d\r\n",switchCount++);
+  //NOTE START CONTEXT SWITCH
+
 	//disable interrupts
-   //IntMasterDisable();
+   IntMasterDisable();
 
 	//save the state of the current thread
 	//on the array of 10 elements
-  reg_save(threads[currThread].state);
+  if(currThread!=-1)
+    reg_save(threads[currThread].state);
 
-	//identify the next active thread
-  //if (! threads[currThread].active) {
-   //free(threads[currThread].stack - STACK_SIZE);
-  //}
 
-  unsigned i;
-
-  // We saved the state of the scheduler, now find the next
-  // runnable thread in round-robin fashion. The 'i' variable
-  // keeps track of how many runnable threads there are. If we
-  // make a pass through threads[] and all threads are inactive,
-  // then 'i' will become 0 and we can exit the entire program.
-  i = NUM_THREADS;
-  do {
-    // Round-robin scheduler
-    if (++currThread == NUM_THREADS) {
+    if(++currThread == NUM_THREADS) {
       currThread = 1;
     }
 
@@ -84,42 +73,23 @@ void scheduler_Handler(void)
        NVIC_ST_CURRENT_R = 0;
 
       //enable interrupts
-       //IntMasterEnable();
+       IntMasterEnable();
 
       //restore the state of the next thread
     	//from the array of 10 elements
       reg_restore(threads[currThread].state);
 
+      //NOTE END CONTEXT SWITCH
+
     } else {
-      free(threads[currThread].stack - STACK_SIZE);
-      i--;
+      yield();
     }
-  } while (i > 1);
 
-  // No active threads left except our idle thread so jump to that.
-  currThread = 0;
-  reg_restore(threads[currThread].state);
+  // // No active threads left except our idle thread so jump to that.
+  // currThread = 0;
+  // reg_restore(threads[currThread].state);
 }
 
-
-
-void handleSVC(int code)
-{
-      //Force Systick interrupt
-      //Enable SYSTICK interrupt pend
-      NVIC_INT_CTRL_R |= NVIC_INT_CTRL_PENDSTSET;
-      //Reset systick so that the next interrupt will delay as usual
-      NVIC_ST_CURRENT_R = 0;
-}
-void SVChandler(void)
-{
-  // asm volatile(
-  //                 "LDR R1,[SP,#24]\n"
-  //                 "LDRB R0,[R1,#-2]\n"
-  //                 "B handleSVC "
-  //               );
-  handleSVC(1);
-}
 
 // This function is called from within user thread context. It executes
 // a jump back to the scheduler. When the scheduler returns here, it acts
@@ -141,12 +111,11 @@ void threadStarter(void)
   // only when the thread exits.
   (*(threadTable[currThread]))();
 
-  iprintf("Thread %d ended\r\n",currThread);
+  // iprintf("%d ended\r\n",currThread);
   // Do thread-specific cleanup tasks. Currently, this just means marking
   // the thread as inactive. Do NOT free the stack here because we're
   // still using it! Remember, this function runs in user thread context.
   threads[currThread].active = 0;
-  iprintf("Thread %d inactive\r\n",currThread);
   // This yield returns to the scheduler and never returns back since
   // the scheduler identifies the thread as inactive.
   yield();
@@ -156,7 +125,7 @@ void threadStarter(void)
 // initial jump-buffer (as would setjmp()) but with our own values
 // for the stack (passed to createThread()) and LR (always set to
 // threadStarter() for each thread).
-extern void createThread(int *buf, char **stack);
+extern void createThread(int *buf, char *stack);
 
 void main(void)
 {
@@ -180,6 +149,11 @@ void main(void)
   UARTConfigSetExpClk(UART0_BASE, SysCtlClockGet(), 115200,
                       (UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE |
                        UART_CONFIG_PAR_NONE));
+   // Start running coroutines
+   // Setup SysTic clock to timeout every 0.5s with interrupt enabled
+   IntMasterEnable();
+   // Initialize the global thread lock
+   lock_init(&uartlock);
 
   // Create all the threads and allocate a stack for each one
   for (i=0; i < NUM_THREADS; i++) {
@@ -196,23 +170,18 @@ void main(void)
     // After createThread() executes, we can execute a jump
     // to threads[i].state and the thread will begin execution
     // at threadStarter() with its own stack.
-    createThread(threads[i].state, &threads[i].stack);
+    createThread(threads[i].state, threads[i].stack);
   }
-
-  // Initialize the global thread lock
-  //lock_init(&uartlock);
 
   // Initialize curr_thread to idle thread 0
   currThread = 0;
-
-  // Start running coroutines
-  // Setup SysTic clock to timeout every 0.5s with interrupt enabled
-  IntMasterEnable();
 
   NVIC_ST_CTRL_R = 0;
   NVIC_ST_RELOAD_R = 8000;
   NVIC_ST_CURRENT_R = 0;
   NVIC_ST_CTRL_R = 0x00000007;
+
+
 
   yield();
 
@@ -223,6 +192,80 @@ void main(void)
   exit(0);
 }
 
+
+void printFault()
+{
+  int R[16],j,psp,xpsr;
+  char nib;
+  char output[12];
+  asm volatile("mov %0,r13":"=r" (R[13]));
+  asm volatile("mov %0,r14":"=r" (R[14]));
+  asm volatile("mov %0,r15":"=r" (R[15]));
+  asm volatile("mrs %0, psp":"=r" (psp));
+  asm volatile("mrs %0, xpsr":"=r" (xpsr));
+
+ RIT128x96x4StringDraw("Fault",32,  0, 15);
+
+//Print SP
+for(j=0;j<8;j++)
+{
+  nib = ((R[13]>>(j*4)) &0xf);
+  if(nib<10)
+    output[10-j] = nib + '0';
+  else
+    output[10-j] =  (nib-10) + 'A';
+}
+output[0] = 's';
+output[1] = 'p';
+output[2] = ':';
+output[11] = 0;
+RIT128x96x4StringDraw(output,0, 15, 15);
+
+//Print PSP
+for(j=0;j<8;j++)
+{
+  nib = ((psp>>(j*4)) &0xf);
+  if(nib<10)
+    output[10-j] = nib + '0';
+  else
+    output[10-j] =  (nib-10) + 'A';
+}
+output[0] = 'P';
+output[1] = 'S';
+output[2] = ':';
+output[11] = 0;
+RIT128x96x4StringDraw(output,0, 30, 15);
+
+//Print xpsr
+for(j=0;j<8;j++)
+{
+  nib = ((xpsr>>(j*4)) &0xf);
+  if(nib<10)
+    output[10-j] = nib + '0';
+  else
+    output[10-j] =  (nib-10) + 'A';
+}
+output[0] = 'x';
+output[1] = 'p';
+output[2] = ':';
+output[11] = 0;
+RIT128x96x4StringDraw(output,0, 45, 15);
+
+//Print LR
+for(j=0;j<8;j++)
+{
+  nib = ((R[14]>>(j*4)) &0xf);
+  if(nib<10)
+    output[10-j] = nib + '0';
+  else
+    output[10-j] =  (nib-10) + 'A';
+}
+output[0] = 'l';
+output[1] = 'r';
+output[2] = ':';
+output[11] = 0;
+RIT128x96x4StringDraw(output,0, 60, 15);
+}
 /*
  * Compile with:
  * ${CC} -o lockdemo.elf -I${STELLARISWARE} -L${STELLARISWARE}/driverlib/gcc

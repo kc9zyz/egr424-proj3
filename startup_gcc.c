@@ -44,7 +44,7 @@ void (* const g_pfnVectors[])(void) =
     0,                                      // Reserved
     0,                                      // Reserved
     0,                                      // Reserved
-    SVChandler,                      // SVCall handler
+    scheduler_Handler,                      // SVCall handler
     IntDefaultHandler,                      // Debug monitor handler
     0,                                      // Reserved
     IntDefaultHandler,                      // The PendSV handler
@@ -168,7 +168,7 @@ NmiSR(void)
     {
     }
 }
-
+extern void printFault();
 //*****************************************************************************
 //
 // This is the code that gets called when the processor receives a fault
@@ -179,62 +179,7 @@ NmiSR(void)
 static void
 FaultISR(void)
 {
-  int R[16],j;
-  volatile int i;
-  char nib;
-  char output[12];
-  asm volatile("push {r3}");
-  asm volatile("mov %0,r13":"=r" (R[13]));
-  asm volatile("mov %0,r14":"=r" (R[14]));
-  asm volatile("mov %0,r15":"=r" (R[15]));
-  asm volatile("push {r0-r2,r4-r12}");
-  asm volatile("pop {%0}":"=r" (R[0]));
-  asm volatile("pop {%0}":"=r" (R[1]));
-  asm volatile("pop {%0}":"=r" (R[2]));
-  asm volatile("pop {%0}":"=r" (R[4]));
-  asm volatile("pop {%0}":"=r" (R[5]));
-  asm volatile("pop {%0}":"=r" (R[6]));
-  asm volatile("pop {%0}":"=r" (R[7]));
-  asm volatile("pop {%0}":"=r" (R[8]));
-  asm volatile("pop {%0}":"=r" (R[9]));
-  asm volatile("pop {%0}":"=r" (R[10]));
-  asm volatile("pop {%0}":"=r" (R[11]));
-  asm volatile("pop {%0}":"=r" (R[12]));
-  //Ordered because r3 was pushed first
-  asm volatile("pop {%0}":"=r" (R[3]));
-
-// RIT128x96x4StringDraw("Fault",32,  0, 15);
-
-//Print SP
-for(j=0;j<8;j++)
-{
-  nib = ((R[13]>>(j*4)) &0xf);
-  if(nib<10)
-    output[10-j] = nib + '0';
-  else
-    output[10-j] =  (nib-10) + 'A';
-}
-output[0] = 's';
-output[1] = 'p';
-output[2] = ':';
-output[11] = 0;
-RIT128x96x4StringDraw(output,0, 0, 15);
-
-
-//Print LR
-for(j=0;j<8;j++)
-{
-  nib = ((R[14]>>(j*4)) &0xf);
-  if(nib<10)
-    output[10-j] = nib + '0';
-  else
-    output[10-j] =  (nib-10) + 'A';
-}
-output[0] = 'l';
-output[1] = 'r';
-output[2] = ':';
-output[11] = 0;
-RIT128x96x4StringDraw(output,0, 15, 15);
+  printFault();
     //
     // Go into an infinite loop.
     //
@@ -254,34 +199,7 @@ RIT128x96x4StringDraw(output,0, 15, 15);
 static void
 IntDefaultHandler(void)
 {
-  int R[16], i;
-  asm volatile("push {r3}");
-  asm volatile("mov %0,r13":"=r" (R[13]));
-  asm volatile("mov %0,r14":"=r" (R[14]));
-  asm volatile("mov %0,r15":"=r" (R[15]));
-  asm volatile("push {r0-r2,r4-r12}");
-  asm volatile("pop {%0}":"=r" (R[0]));
-  asm volatile("pop {%0}":"=r" (R[1]));
-  asm volatile("pop {%0}":"=r" (R[2]));
-  asm volatile("pop {%0}":"=r" (R[4]));
-  asm volatile("pop {%0}":"=r" (R[5]));
-  asm volatile("pop {%0}":"=r" (R[6]));
-  asm volatile("pop {%0}":"=r" (R[7]));
-  asm volatile("pop {%0}":"=r" (R[8]));
-  asm volatile("pop {%0}":"=r" (R[9]));
-  asm volatile("pop {%0}":"=r" (R[10]));
-  asm volatile("pop {%0}":"=r" (R[11]));
-  asm volatile("pop {%0}":"=r" (R[12]));
-  //Ordered because r3 was pushed first
-  asm volatile("pop {%0}":"=r" (R[3]));
-
-  RIT128x96x4StringDraw("FAULT, BITCH",       32,  0, 15);
-  for(i=0;i<16;i++)
-  {
-    iprintf("r%d: %x\r\n",i,R[i] );
-  }
-  fflush(stdout);
-
+  printFault();
     //
     // Go into an infinite loop.
     //

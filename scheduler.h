@@ -6,11 +6,11 @@ extern void lock_init(unsigned *lock);
 extern unsigned lock_acquire(unsigned *lock);
 extern void lock_release(unsigned *lock);
 
-extern unsigned currThread;
+extern int currThread;
 extern void yield(void);
-extern unsigned lock(unsigned threadlock);
-extern void unlock(unsigned threadlock);
-extern void unlock_force(unsigned threadlock);
+extern unsigned lock(unsigned *threadlock);
+extern void unlock(unsigned *threadlock);
+extern void unlock_force(unsigned *threadlock);
 
 extern void reg_save(int *state);
 extern void reg_restore(int *state);

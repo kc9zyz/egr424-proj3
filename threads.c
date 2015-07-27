@@ -16,7 +16,7 @@ void thread1(void)
   count = 0;
   while(1)
   {
-    iprintf("%d -> %d\r\n",currThread, count++);
+    // iprintf("%d -> %d\r\n",currThread, count++);
     yield();
   }
 
@@ -26,7 +26,7 @@ void thread2(void)
 {
   while(1)
   {
-    iprintf("%d -> %d\r\n",currThread, count++);
+    // iprintf("%d -> %d\r\n",currThread, count++);
     yield();
   }
 }
@@ -36,7 +36,7 @@ void thread3(void)
 {
   while(1)
   {
-    iprintf("%d -> %d\r\n",currThread, count++);
+    // iprintf("%d -> %d\r\n",currThread, count++);
     yield();
   }
 }
@@ -46,7 +46,7 @@ void thread4(void)
 {
   while(1)
   {
-    iprintf("%d -> %d\r\n",currThread, count++);
+    // iprintf("%d -> %d\r\n",currThread, count++);
     yield();
   }
 }

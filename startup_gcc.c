@@ -3,7 +3,7 @@
 // startup_gcc.c - Startup code for use with GNU tools.
 //
 //*****************************************************************************
-
+#include <stdio.h>
 //*****************************************************************************
 //
 // Forward declaration of the default fault handlers.
@@ -179,27 +179,69 @@ NmiSR(void)
 static void
 FaultISR(void)
 {
-    volatile int R0,R1,R2,R3,LR,SP;
-    asm volatile("MOV %0, r0 ":"=r" (R0));
-    asm volatile("MOV %0, r1 ":"=r" (R1));
-    asm volatile("MOV %0, r2 ":"=r" (R2));
-    asm volatile("MOV %0, r3 ":"=r" (R3));
-    asm volatile("MOV %0, lr ":"=r" (LR));
-    asm volatile("MOV %0, sp ":"=r" (SP));
-    RIT128x96x4StringDraw("FAULT, BITCH",       32,  0, 15);
+  int R[16],j;
+  volatile int i;
+  char nib;
+  char output[12];
+  asm volatile("push {r3}");
+  asm volatile("mov %0,r13":"=r" (R[13]));
+  asm volatile("mov %0,r14":"=r" (R[14]));
+  asm volatile("mov %0,r15":"=r" (R[15]));
+  asm volatile("push {r0-r2,r4-r12}");
+  asm volatile("pop {%0}":"=r" (R[0]));
+  asm volatile("pop {%0}":"=r" (R[1]));
+  asm volatile("pop {%0}":"=r" (R[2]));
+  asm volatile("pop {%0}":"=r" (R[4]));
+  asm volatile("pop {%0}":"=r" (R[5]));
+  asm volatile("pop {%0}":"=r" (R[6]));
+  asm volatile("pop {%0}":"=r" (R[7]));
+  asm volatile("pop {%0}":"=r" (R[8]));
+  asm volatile("pop {%0}":"=r" (R[9]));
+  asm volatile("pop {%0}":"=r" (R[10]));
+  asm volatile("pop {%0}":"=r" (R[11]));
+  asm volatile("pop {%0}":"=r" (R[12]));
+  //Ordered because r3 was pushed first
+  asm volatile("pop {%0}":"=r" (R[3]));
 
-    iprintf("r0: %x\r\n",R0 );
-    iprintf("r1: %x\r\n",R1 );
-    iprintf("r2: %x\r\n",R2 );
-    iprintf("r3: %x\r\n",R3 );
-    iprintf("lr: %x\r\n",LR );
-    iprintf("sp: %x\r\n",SP );
+// RIT128x96x4StringDraw("Fault",32,  0, 15);
+
+//Print SP
+for(j=0;j<8;j++)
+{
+  nib = ((R[13]>>(j*4)) &0xf);
+  if(nib<10)
+    output[10-j] = nib + '0';
+  else
+    output[10-j] =  (nib-10) + 'A';
+}
+output[0] = 's';
+output[1] = 'p';
+output[2] = ':';
+output[11] = 0;
+RIT128x96x4StringDraw(output,0, 0, 15);
+
+
+//Print LR
+for(j=0;j<8;j++)
+{
+  nib = ((R[14]>>(j*4)) &0xf);
+  if(nib<10)
+    output[10-j] = nib + '0';
+  else
+    output[10-j] =  (nib-10) + 'A';
+}
+output[0] = 'l';
+output[1] = 'r';
+output[2] = ':';
+output[11] = 0;
+RIT128x96x4StringDraw(output,0, 15, 15);
     //
-    // Enter an infinite loop.
+    // Go into an infinite loop.
     //
     while(1)
     {
     }
+
 }
 
 //*****************************************************************************
@@ -212,21 +254,34 @@ FaultISR(void)
 static void
 IntDefaultHandler(void)
 {
-  int R0,R1,R2,R3,LR,SP;
-  asm volatile("MOV %0, r0 ":"=r" (R0));
-  asm volatile("MOV %0, r1 ":"=r" (R1));
-  asm volatile("MOV %0, r2 ":"=r" (R2));
-  asm volatile("MOV %0, r3 ":"=r" (R3));
-  asm volatile("MOV %0, lr ":"=r" (LR));
-  asm volatile("MOV %0, sp ":"=r" (SP));
-  RIT128x96x4StringDraw("FAULT, BITCH",       32,  0, 15);
+  int R[16], i;
+  asm volatile("push {r3}");
+  asm volatile("mov %0,r13":"=r" (R[13]));
+  asm volatile("mov %0,r14":"=r" (R[14]));
+  asm volatile("mov %0,r15":"=r" (R[15]));
+  asm volatile("push {r0-r2,r4-r12}");
+  asm volatile("pop {%0}":"=r" (R[0]));
+  asm volatile("pop {%0}":"=r" (R[1]));
+  asm volatile("pop {%0}":"=r" (R[2]));
+  asm volatile("pop {%0}":"=r" (R[4]));
+  asm volatile("pop {%0}":"=r" (R[5]));
+  asm volatile("pop {%0}":"=r" (R[6]));
+  asm volatile("pop {%0}":"=r" (R[7]));
+  asm volatile("pop {%0}":"=r" (R[8]));
+  asm volatile("pop {%0}":"=r" (R[9]));
+  asm volatile("pop {%0}":"=r" (R[10]));
+  asm volatile("pop {%0}":"=r" (R[11]));
+  asm volatile("pop {%0}":"=r" (R[12]));
+  //Ordered because r3 was pushed first
+  asm volatile("pop {%0}":"=r" (R[3]));
 
-  iprintf("r0: %x\r\n",R0 );
-  iprintf("r1: %x\r\n",R1 );
-  iprintf("r2: %x\r\n",R2 );
-  iprintf("r3: %x\r\n",R3 );
-  iprintf("lr: %x\r\n",LR );
-  iprintf("sp: %x\r\n",SP );
+  RIT128x96x4StringDraw("FAULT, BITCH",       32,  0, 15);
+  for(i=0;i<16;i++)
+  {
+    iprintf("r%d: %x\r\n",i,R[i] );
+  }
+  fflush(stdout);
+
     //
     // Go into an infinite loop.
     //

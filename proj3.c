@@ -18,7 +18,7 @@ typedef struct {
   char *stack;      // pointer to TOP of stack (highest memory location)
   int state[10];    // saved state for our custom save and restore functions
 } threadStruct_t;
-
+volatile int switchCount = 0;
 // thread_t is a pointer to function with no parameters and
 // no return value...i.e., a user-space thread.
 typedef void (*thread_t)(void);
@@ -52,6 +52,7 @@ unsigned currThread;    // The currently active thread
 // of the threads.
 void scheduler_Handler(void)
 {
+  iprintf("%d\r\n",switchCount++);
 	//disable interrupts
    //IntMasterDisable();
 

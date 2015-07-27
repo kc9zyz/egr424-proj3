@@ -179,7 +179,7 @@ NmiSR(void)
 static void
 FaultISR(void)
 {
-    int R0,R1,R2,R3,LR,SP;
+    volatile int R0,R1,R2,R3,LR,SP;
     asm volatile("MOV %0, r0 ":"=r" (R0));
     asm volatile("MOV %0, r1 ":"=r" (R1));
     asm volatile("MOV %0, r2 ":"=r" (R2));

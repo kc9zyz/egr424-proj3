@@ -16,7 +16,7 @@
 typedef struct {
   int active;       // non-zero means thread is allowed to run
   char *stack;      // pointer to TOP of stack (highest memory location)
-  int state[40];    // saved state for our custom save and restore functions
+  int state[10];    // saved state for our custom save and restore functions
 } threadStruct_t;
 
 // thread_t is a pointer to function with no parameters and
@@ -38,8 +38,9 @@ static thread_t threadTable[] = {
   thread1,
   thread2,
   thread3,
-  thread4,
+  thread4
 };
+
 #define NUM_THREADS (sizeof(threadTable)/sizeof(threadTable[0]))
 
 // These static global variables are used in scheduler(), in
@@ -52,16 +53,16 @@ unsigned currThread;    // The currently active thread
 void scheduler_Handler(void)
 {
 	//disable interrupts
-   IntMasterDisable();
+   //IntMasterDisable();
 
 	//save the state of the current thread
 	//on the array of 10 elements
   reg_save(threads[currThread].state);
 
 	//identify the next active thread
-  if (! threads[currThread].active) {
-   free(threads[currThread].stack - STACK_SIZE);
-  }
+  //if (! threads[currThread].active) {
+   //free(threads[currThread].stack - STACK_SIZE);
+  //}
 
   unsigned i;
 
@@ -73,35 +74,33 @@ void scheduler_Handler(void)
   i = NUM_THREADS;
   do {
     // Round-robin scheduler
-    if (++currThread >= NUM_THREADS) {
+    if (++currThread == NUM_THREADS) {
       currThread = 1;
     }
 
     if (threads[currThread].active) {
-      //enable interrupts
-       IntMasterEnable();
       //Reset systick so that the next interrupt will delay as usual
        NVIC_ST_CURRENT_R = 0;
+
+      //enable interrupts
+       //IntMasterEnable();
+
       //restore the state of the next thread
     	//from the array of 10 elements
       reg_restore(threads[currThread].state);
 
     } else {
+      free(threads[currThread].stack - STACK_SIZE);
       i--;
     }
-  } while (i > 0);
+  } while (i > 1);
 
   // No active threads left except our idle thread so jump to that.
-  reg_restore(threads[0].state);
+  currThread = 0;
+  reg_restore(threads[currThread].state);
 }
 
-// This function is called from within user thread context. It executes
-// a jump back to the scheduler. When the scheduler returns here, it acts
-// like a standard function return back to the caller of yield().
-void yield(void)
-{
-    asm volatile ("svc #1");
-}
+
 
 void handleSVC(int code)
 {
@@ -119,6 +118,14 @@ void SVChandler(void)
   //                 "B handleSVC "
   //               );
   handleSVC(1);
+}
+
+// This function is called from within user thread context. It executes
+// a jump back to the scheduler. When the scheduler returns here, it acts
+// like a standard function return back to the caller of yield().
+void yield(void)
+{
+    asm volatile ("svc #1");
 }
 
 // This is the starting point for all threads. It runs in user thread
@@ -192,7 +199,7 @@ void main(void)
   }
 
   // Initialize the global thread lock
-  lock_init(&uartlock);
+  //lock_init(&uartlock);
 
   // Initialize curr_thread to idle thread 0
   currThread = 0;
@@ -206,7 +213,7 @@ void main(void)
   NVIC_ST_CURRENT_R = 0;
   NVIC_ST_CTRL_R = 0x00000007;
 
-  while(1);
+  yield();
 
   // If scheduler() returns, all coroutines are inactive and we return
   // from main() hence exit() should be called implicitly (according to

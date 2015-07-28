@@ -15,7 +15,7 @@ void thread1(void)
 {
 
   count = 0;
-  while(1)
+  while(count<100)
   {
     if(lock(&uartlock))
     {
@@ -29,26 +29,26 @@ void thread1(void)
 
 void thread2(void)
 {
-  while(1)
-  {
-    yield();
-  }
+  // while(1)
+  // {
+  //   yield();
+  // }
 }
 
 // This thread will contain LED flashing commands
 void thread3(void)
 {
-  while(1)
-  {
-    yield();
-  }
+  // while(1)
+  // {
+  //   yield();
+  // }
 }
 
 // This thread will contain OLED commands
 void thread4(void)
 {
-  while(1)
-  {
-     yield();
-  }
+  // while(1)
+  // {
+  //    yield();
+  // }
 }

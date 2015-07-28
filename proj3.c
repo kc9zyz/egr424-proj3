@@ -46,6 +46,8 @@ static thread_t threadTable[] = {
 // the yield() function, and in threadStarter()
 static threadStruct_t threads[NUM_THREADS]; // the thread table
 int currThread;    // The currently active thread
+volatile int numActive;
+volatile int firstRun;
 void printFault();
 
 // This is the handler for the systic timer that handles the scheduling
@@ -60,34 +62,39 @@ void scheduler_Handler(void)
 
 	//save the state of the current thread
 	//on the array of 10 elements
-  if(currThread!=-1)
+  if(!firstRun)
     reg_save(threads[currThread].state);
+  else
+    firstRun = 0;
+    //check if there are active threads
+    if(numActive)
+    {
+      if(++currThread == NUM_THREADS) {
+        currThread = 1;
+      }
 
+      if (threads[currThread].active) {
+        //Reset systick so that the next interrupt will delay as usual
+         NVIC_ST_CURRENT_R = 0;
 
-    if(++currThread == NUM_THREADS) {
-      currThread = 1;
+        //enable interrupts
+         IntMasterEnable();
+
+        //restore the state of the next thread
+      	//from the array of 10 elements
+        reg_restore(threads[currThread].state);
+
+        //NOTE END CONTEXT SWITCH
+
+      } else {
+        IntMasterEnable();
+        scheduler_Handler();
+        // yield();
+      }
     }
-
-    if (threads[currThread].active) {
-      //Reset systick so that the next interrupt will delay as usual
-       NVIC_ST_CURRENT_R = 0;
-
-      //enable interrupts
-       IntMasterEnable();
-
-      //restore the state of the next thread
-    	//from the array of 10 elements
-      reg_restore(threads[currThread].state);
-
-      //NOTE END CONTEXT SWITCH
-
-    } else {
-      yield();
-    }
-
   // // No active threads left except our idle thread so jump to that.
-  // currThread = 0;
-  // reg_restore(threads[currThread].state);
+  currThread = 0;
+  reg_restore(threads[currThread].state);
 }
 
 
@@ -116,8 +123,12 @@ void threadStarter(void)
   // the thread as inactive. Do NOT free the stack here because we're
   // still using it! Remember, this function runs in user thread context.
   threads[currThread].active = 0;
+
+  //Decrease the number of active threads
+  numActive--;
   // This yield returns to the scheduler and never returns back since
   // the scheduler identifies the thread as inactive.
+  // while(1);
   yield();
 }
 
@@ -154,7 +165,7 @@ void main(void)
    IntMasterEnable();
    // Initialize the global thread lock
    lock_init(&uartlock);
-
+   numActive = 0;
   // Create all the threads and allocate a stack for each one
   for (i=0; i < NUM_THREADS; i++) {
     // Mark thread as runnable
@@ -171,6 +182,8 @@ void main(void)
     // to threads[i].state and the thread will begin execution
     // at threadStarter() with its own stack.
     createThread(threads[i].state, threads[i].stack);
+    if(i)
+      numActive++;
   }
 
   // Initialize curr_thread to idle thread 0
@@ -181,8 +194,8 @@ void main(void)
   NVIC_ST_CURRENT_R = 0;
   NVIC_ST_CTRL_R = 0x00000007;
 
-
-
+  //signal that it is the first run through the scheduler
+  firstRun = 1;
   yield();
 
   // If scheduler() returns, all coroutines are inactive and we return

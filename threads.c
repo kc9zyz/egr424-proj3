@@ -7,8 +7,8 @@ volatile unsigned count;
 // when there are no other active threads
 void thread0(void)
 {
-  while(1)
     iprintf("IDLE\r\n");
+    while(1);
 }
 
 void thread1(void)

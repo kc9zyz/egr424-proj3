@@ -89,7 +89,6 @@ void scheduler_Handler(void)
       } else {
         IntMasterEnable();
         scheduler_Handler();
-        // yield();
       }
     }
   // // No active threads left except our idle thread so jump to that.

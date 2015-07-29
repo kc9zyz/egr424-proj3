@@ -91,13 +91,9 @@ void scheduler_Handler(void)
         scheduler_Handler();
       }
     }
-    else
-    {
-      // // No active threads left except our idle thread so jump to that.
-      currThread = 0;
-      reg_restore(threads[currThread].state);
-    }
-
+  // // No active threads left except our idle thread so jump to that.
+  currThread = 0;
+  reg_restore(threads[currThread].state);
 }
 
 

@@ -53,7 +53,7 @@ void printFault();
 // This is the handler for the systic timer that handles the scheduling
 // of the threads.
 
-void scheduler_Handler(void)
+/*void scheduler_Handler(void)
 {
   //NOTE START CONTEXT SWITCH
 
@@ -91,13 +91,54 @@ void scheduler_Handler(void)
         scheduler_Handler();
       }
     }
-    else
-    {
-      // // No active threads left except our idle thread so jump to that.
-      currThread = 0;
-      reg_restore(threads[currThread].state);
-    }
+  // // No active threads left except our idle thread so jump to that.
+  currThread = 0;
+  reg_restore(threads[currThread].state);
+}*/
 
+void scheduler_Handler(void)
+{
+  //NOTE START CONTEXT SWITCH
+
+	//disable interrupts
+   IntMasterDisable();
+
+	//save the state of the current thread
+	//on the array of 10 elements
+  //if(!firstRun)
+    reg_save(threads[currThread].state);
+  //else
+  //  firstRun = 0;
+    //check if there are active threads
+    //if(numActive)
+    //{
+      if(++currThread >= NUM_THREADS) {
+        currThread = 1;
+      }
+
+      if (threads[currThread].active) {
+        //Reset systick so that the next interrupt will delay as usual
+         NVIC_ST_CURRENT_R = 0;
+
+        //enable interrupts
+         IntMasterEnable();
+
+        //restore the state of the next thread
+      	//from the array of 10 elements
+        reg_restore(threads[currThread].state);
+
+        //NOTE END CONTEXT SWITCH
+
+      } else {
+        NVIC_ST_CURRENT_R = 0;
+
+       //enable interrupts
+        IntMasterEnable();
+
+       //restore the state of the next thread
+       //from the array of 10 elements
+       reg_restore(threads[0].state);
+     }
 }
 
 
@@ -128,7 +169,7 @@ void threadStarter(void)
   threads[currThread].active = 0;
 
   //Decrease the number of active threads
-  numActive--;
+  //numActive--;
   // This yield returns to the scheduler and never returns back since
   // the scheduler identifies the thread as inactive.
   // while(1);
@@ -190,7 +231,7 @@ void main(void)
   }
 
   // Initialize curr_thread to idle thread 0
-  currThread = 0;
+  currThread = -1;
 
   NVIC_ST_CTRL_R = 0;
   NVIC_ST_RELOAD_R = 8000;

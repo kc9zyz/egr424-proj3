@@ -13,33 +13,41 @@ void thread0(void)
 
 void thread1(void)
 {
+  while (1) {
+      if (lock(&uartlock)) {
+        // Simulate code that is occasionally interrupted
+        iprintf("THIS IS T");
+            yield(); // context switch "interrupt"
+        iprintf("HREAD NU");
+            yield(); // context switch "interrupt"
+        iprintf("MBER 1\r\n");
 
-  count = 0;
-  while(count<100)
-  {
-    if(lock(&uartlock))
-    {
-      iprintf("%d -> %d\r\n",currThread, count++);
-      unlock(&uartlock);
+        unlock(&uartlock);
+      }
+      yield();
     }
-    // yield();
-  }
-
 }
 
 void thread2(void)
 {
-  // while(1)
-  // {
-  //   yield();
-  // }
+  while (1) {
+    if (lock(&uartlock)) {
+      // Simulate code that is occasionally interrupted
+      iprintf("this is t");
+          yield(); // context switch "interrupt"
+      iprintf("hread number 2\r\n");
+
+      unlock(&uartlock);
+    }
+    yield();
+  }
 }
 
 // This thread will contain LED flashing commands
 void thread3(void)
 {
-  // while(1)
-  // {
+   //while(1)
+   //{
   //   yield();
   // }
 }
@@ -47,8 +55,54 @@ void thread3(void)
 // This thread will contain OLED commands
 void thread4(void)
 {
-  // while(1)
-  // {
-  //    yield();
-  // }
+  volatile int j, k;
+  volatile unsigned char clear[] = {0x00, 0x00, 0x00, 0x00,
+                                    0x00, 0x00, 0x00, 0x00,
+                                    0x00, 0x00, 0x00, 0x00,
+                                    0x00, 0x00, 0x00, 0x00,
+                                    0x00, 0x00, 0x00, 0x00,
+                                    0x00, 0x00, 0x00, 0x00};
+
+  volatile unsigned char image[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+                                    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+                                    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+                                    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+                                    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+                                    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+
+   while(1)
+   {
+     RIT128x96x4ImageDraw(image, 0, 48, 16, 3);
+     for(j = 0 ; j < 50 ; j++)
+     {
+       yield();
+     }
+
+    for(k = 8 ; k <= 112 ; k+=8)
+    {
+
+      RIT128x96x4ImageDraw(image, k, 48, 16, 3);
+      RIT128x96x4ImageDraw(clear, (k-8), 48, 8, 3);
+      for(j = 0 ; j < 50 ; j++)
+      {
+        yield();
+      }
+    }
+    RIT128x96x4ImageDraw(image, 112, 48, 16, 3);
+    for(j = 0 ; j < 50 ; j++)
+    {
+      yield();
+    }
+
+   for(k = 104 ; k >= 0 ; k-=8)
+   {
+
+     RIT128x96x4ImageDraw(image, k, 48, 16, 3);
+     RIT128x96x4ImageDraw(clear, (k+16), 48, 8, 3);
+     for(j = 0 ; j < 50 ; j++)
+     {
+      yield();
+     }
+   }
+ }
 }

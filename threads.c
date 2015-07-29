@@ -52,35 +52,6 @@ void thread2(void)
 // This thread will contain LED flashing commands
 void thread3(void)
 {
-  volatile unsigned long ulLoop;
- //
- // Enable the GPIO port that is used for the on-board LED.
- //
- SYSCTL_RCGC2_R = SYSCTL_RCGC2_GPIOF;
-
- //Enable timer0
- SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
-
- //
- // Do a dummy read to insert a few cycles after enabling the peripheral.
- //
- ulLoop = SYSCTL_RCGC2_R;
-
- //
- // Enable the GPIO pin for the LED (PF0).  Set the direction as output, and
- // enable the GPIO pin for digital function.
- //
- GPIO_PORTF_DIR_R = 0x01;
- GPIO_PORTF_DEN_R = 0x01;
-
- //Configure timer to run in timeout mode, at twice the sysclock frequency
- TimerConfigure(TIMER0_BASE, TIMER_CFG_PERIODIC);
- TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet()/2);
- TimerIntEnable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
- TimerEnable(TIMER0_BASE, TIMER_A);
-
-
-
  while(1)
  {
    //Toggle the LED pin

@@ -28,7 +28,6 @@ void thread1(void)
         iprintf("HREAD NU");
             yield(); // context switch "interrupt"
         iprintf("MBER 1\r\n");
-
         unlock(&uartlock);
       }
       yield();

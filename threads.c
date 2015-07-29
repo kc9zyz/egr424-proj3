@@ -57,8 +57,8 @@ void thread3(void)
    //Toggle the LED pin
    GPIO_PORTF_DATA_R ^= 0x01;
    //Loop until timer0 ticks
-   while(!TimerIntStatus(TIMER0_BASE,false)&TIMER_TIMA_TIMEOUT)
-     yield(); //Yield control to scheduler when timer has not ticked
+   while(!TimerIntStatus(TIMER0_BASE,false)&TIMER_TIMA_TIMEOUT);
+     //yield(); //Yield control to scheduler when timer has not ticked
    //Clear the interrupt flag when the timer has ticked
    TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
  }

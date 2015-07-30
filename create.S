@@ -1,18 +1,19 @@
 /*
  * Implement the thread creation task:
  *
- *   - initialize the jump buffer with appropriate values for
+ *   - initialize the buffer with appropriate values for
  *     R13 (stack) and R14 (first address to jump to)
  *   - all other registers are irrelevant upon thread creation
  *
- *   In the jump buffer, the R13 slot is set to the second parameter of this
- *   function (the top-of-stack address, passed in R1). The R14 slot is set to
- *   the address of the threadStarter() function.
+ *   The buffer is filled with data that will be restored to
+ *   registers when reg_restore is called. The process stack must be
+ *   prepped to include the variables that will be restored when an
+ *   interrupt return is faked.
  *
  *   The C prototype for this function call is:
- *       createThread(threads[i].state, threads[i].stack)
+ *       createThread(int *buf, char *stack);
  *   thus:
- *       R0 <-- state (an array to store registers)
+ *       R0 <-- buf (an array to store registers)
  *       R1 <-- stack (address of top-of-stack)
  */
     .syntax unified

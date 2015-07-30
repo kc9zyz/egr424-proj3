@@ -1,7 +1,8 @@
 /*
- * Save the register state
+ * Restore the register state
  *
- * Saves r4->r12, PSP into the state buffer
+ * Restores r4->r12, PSP from the state buffer
+ * for a thread that will begin after being interrupted
  */
     .syntax unified
     .text

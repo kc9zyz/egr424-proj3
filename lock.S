@@ -1,5 +1,6 @@
 /*
- * Implement locking
+ * Implement locking by storing an exclusive 0 to the lock
+ * variable
  */
     .syntax unified
     .text
@@ -8,7 +9,7 @@
     .thumb_func
     .type lock_acquire,function
     .global lock_acquire
-    
+
 lock_acquire:
     MOV R1, #0
     LDREX r2, [r0]
@@ -25,4 +26,3 @@ lock_acquire:
     CLREX
     MOV R0, #0
     BX LR
-

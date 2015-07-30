@@ -5,7 +5,7 @@ unsigned lockedThread = 0;
 //Locks
 unsigned uartlock;
 
-//Locks a resource by upcountLocking
+//Locks a resource by upcount Locking
 unsigned lock(unsigned *threadlock)
 {
         unsigned ret = 0;
@@ -44,14 +44,14 @@ void unlock_force(unsigned *threadlock)
         countLock = 0;
         lockedThread = 0;
 }
-
+//Releases a locking variable to the 1 state
 void lock_release(unsigned *lock)
 {
         asm volatile (
                 "mov r1, #1\n"
                 "str       r1, [r0]");
 }
-// These are functions you have to write. Right now they are do-nothing stubs.
+//Initializes a locking variable to the 1 state
 void lock_init(unsigned *lock)
 {
         asm volatile (

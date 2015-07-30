@@ -11,7 +11,7 @@
 
 volatile unsigned count;
 
-// Thread 0 is currently an idle thread for the system to fall into
+// Thread 0 is an idle thread for the system to fall into
 // when there are no other active threads
 void thread0(void)
 {
@@ -34,11 +34,10 @@ void thread1(void)
                         iprintf("MBER 1\r\n");
                         unlock(&uartlock);
                 }
-
                 yield();
         }
 }
-//Thread 1 is a UART thread demonstrating peripheral locking
+//Thread 2 is a UART thread demonstrating peripheral locking
 //as well as calls to Yield();
 void thread2(void)
 {
@@ -53,8 +52,8 @@ void thread2(void)
 
                         unlock(&uartlock);
                 }
-//If enabled, try to test the pirvilege level. If the thread is in unprivileged
-//mode, the system will hard fault.
+//If enabled, try to test the pirvilege level.
+//If the thread is in unprivileged mode, the system will hard fault.
 #ifdef PRIV_TEST
                 NVIC_ST_CTRL_R = 0x00000000;
 #endif
@@ -98,7 +97,7 @@ const unsigned char image[] =
         0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
         0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff
 };
-// This thread will contain OLED commands
+// This thread contains OLED commands
 void thread4(void)
 {
         //Declare variables for looping

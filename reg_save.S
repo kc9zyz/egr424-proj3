@@ -2,6 +2,7 @@
  * Save the register state
  *
  * Saves r4->r12, PSP into the state buffer
+ * for a thread that has just been interrupted
  */
     .syntax unified
     .text

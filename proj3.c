@@ -52,6 +52,9 @@ volatile int firstRun;
 void printFault();
 
 //Set the privilege value of thread mode to unprivileged
+//Only needs to be called at the beginning, because this
+//sets the state of thread mode execution for the duration
+//of execution
 void unpriv(void)
 {
         //Run code to change the thread mode pirvilege value
@@ -62,9 +65,8 @@ void unpriv(void)
                 );
 
 }
-// This is the handler for the systic timer that handles the scheduling
-// of the threads.
-
+// This is the handler for the systic timer/SVC interrupt that
+// handles the scheduling of the threads.
 void scheduler_Handler(void)
 {
 
@@ -123,8 +125,8 @@ void yield(void)
 
 // This is the starting point for all threads. It runs in user thread
 // context using the thread-specific stack. The address of this function
-// is saved by createThread() in the LR field of the jump buffer so that
-// the first time the scheduler() does a longjmp() to the thread, we
+// is saved by createThread() in the LR field of the buffer so that
+// the first time the scheduler() does a reg_restore to the thread, we
 // start here.
 void threadStarter(void)
 {
@@ -146,18 +148,20 @@ void threadStarter(void)
         yield();
 }
 
-//Access the curr_thread variable
+//Access the currthread variable
 int get_currThread(void)
 {
         return currThread;
 }
 
 // This function is implemented in assembly language. It sets up the
-// initial jump-buffer (as would setjmp()) but with our own values
+// initial buffer (as would setjmp()) but with our own values
 // for the stack (passed to createThread()) and LR (always set to
 // threadStarter() for each thread).
 extern void createThread(int *buf, char *stack);
 
+//Main function of the program, sets up peripherals,
+//creates threads, and starts the scheduler
 void main(void)
 {
         unsigned i;
@@ -256,7 +260,7 @@ void main(void)
         exit(0);
 }
 
-
+//Prints out a fault message to the OLED screen
 void printFault()
 {
         int R[16],j,psp,xpsr,pc;

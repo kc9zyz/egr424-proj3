@@ -191,7 +191,8 @@ void main(void)
         GPIO_PORTF_DIR_R = 0x0F;
         GPIO_PORTF_DEN_R = 0x0F;
 
-        //Configure timer to run in timeout mode at twice the sysclock frequency
+        //Configure timer to run in timeout mode at twice the sysclock
+        // frequency
         TimerConfigure(TIMER0_BASE, TIMER_CFG_PERIODIC);
         TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet()/2);
         TimerIntEnable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
@@ -336,11 +337,3 @@ void printFault()
         output[11] = 0;
         RIT128x96x4StringDraw(output,0, 60, 15);
 }
-/*
- * Compile with:
- * ${CC} -o lockdemo.elf -I${STELLARISWARE} -L${STELLARISWARE}/driverlib/gcc
- *     -Tlinkscript.x -Wl,-Map,lockdemo.map -Wl,--entry,ResetISR
- *     lockdemo.c create.S threads.c startup_gcc.c syscalls.c rit128x96x4.c
- *     -ldriver
- */
-// vim: expandtab ts=2 sw=2 cindent

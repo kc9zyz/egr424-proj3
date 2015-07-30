@@ -20,6 +20,12 @@ reg_restore:
   //Move r1 into sp to restore the PSP
   msr psp, r1
 
+  //Turn off GPIO port for context switching
+  ldr	r3, =0x400253fc
+  ldr	r2, [r3, #0]
+  bic.w	r2, r2, #2
+  str	r2, [r3, #0]
+  //NOTE END CONTEXT SWITCH
   //fake a return from the handler to use
   //thread mode and process stack
   LDR LR, =0xFFFFFFFD

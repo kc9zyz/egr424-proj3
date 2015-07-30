@@ -51,12 +51,22 @@ volatile int numActive;
 volatile int firstRun;
 void printFault();
 
+//Set the privilege value of thread mode to unprivileged
+void unpriv(void)
+{
+  //Run code to change the thread mode pirvilege value
+  asm volatile(
+                "MRS R3, CONTROL\n"
+                "ORR R3, R3, #1\n"
+                "MSR CONTROL, R3\n"
+                );
+
+}
 // This is the handler for the systic timer that handles the scheduling
 // of the threads.
 
 void scheduler_Handler(void)
 {
-  //NOTE START CONTEXT SWITCH
 
 	//disable interrupts
    IntMasterDisable();
@@ -85,9 +95,9 @@ void scheduler_Handler(void)
       	//from the array of 10 elements
         reg_restore(threads[currThread].state);
 
-        //NOTE END CONTEXT SWITCH
-
-      } else {
+      }
+      else
+      {
         IntMasterEnable();
         scheduler_Handler();
       }
@@ -136,6 +146,12 @@ void threadStarter(void)
   yield();
 }
 
+//Access the curr_thread variable
+int get_currThread(void)
+{
+  return currThread;
+}
+
 // This function is implemented in assembly language. It sets up the
 // initial jump-buffer (as would setjmp()) but with our own values
 // for the stack (passed to createThread()) and LR (always set to
@@ -165,11 +181,11 @@ void main(void)
   ulLoop = SYSCTL_RCGC2_R;
 
   //
-  // Enable the GPIO pin for the LED (PF0).  Set the direction as output, and
+  // Enable the GPIO pin for the LED0/1 (PF2/3). and PF1  Set the direction as output, and
   // enable the GPIO pin for digital function.
   //
-  GPIO_PORTF_DIR_R = 0x01;
-  GPIO_PORTF_DEN_R = 0x01;
+  GPIO_PORTF_DIR_R = 0x0F;
+  GPIO_PORTF_DEN_R = 0x0F;
 
   //Configure timer to run in timeout mode, at twice the sysclock frequency
   TimerConfigure(TIMER0_BASE, TIMER_CFG_PERIODIC);
@@ -227,6 +243,10 @@ void main(void)
 
   //signal that it is the first run through the scheduler
   firstRun = 1;
+
+  //Decrease privilige level for thread mode
+  unpriv();
+
   yield();
 
   // If scheduler() returns, all coroutines are inactive and we return
@@ -239,16 +259,18 @@ void main(void)
 
 void printFault()
 {
-  int R[16],j,psp,xpsr;
+  int R[16],j,psp,xpsr,pc;
   char nib;
   char output[12];
+  asm volatile("mrs r1, psp");
+  asm volatile("LDMIA r1, {r0-r7}");
   asm volatile("mov %0,r13":"=r" (R[13]));
-  asm volatile("mov %0,r14":"=r" (R[14]));
+  asm volatile("mov %0,r6":"=r" (pc));
   asm volatile("mov %0,r15":"=r" (R[15]));
-  asm volatile("mrs %0, psp":"=r" (psp));
   asm volatile("mrs %0, xpsr":"=r" (xpsr));
+    asm volatile("mrs %0, psp":"=r" (psp));
 
- RIT128x96x4StringDraw("Fault",32,  0, 15);
+ RIT128x96x4StringDraw("Fault Occured: info",0,  0, 15);
 
 //Print SP
 for(j=0;j<8;j++)
@@ -298,14 +320,14 @@ RIT128x96x4StringDraw(output,0, 45, 15);
 //Print LR
 for(j=0;j<8;j++)
 {
-  nib = ((R[14]>>(j*4)) &0xf);
+  nib = ((pc>>(j*4)) &0xf);
   if(nib<10)
     output[10-j] = nib + '0';
   else
     output[10-j] =  (nib-10) + 'A';
 }
-output[0] = 'l';
-output[1] = 'r';
+output[0] = 'p';
+output[1] = 'c';
 output[2] = ':';
 output[11] = 0;
 RIT128x96x4StringDraw(output,0, 60, 15);

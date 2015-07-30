@@ -13,14 +13,14 @@ unsigned lock(unsigned *threadlock)
   {
     //Check if the thread asking for the lock
     //is the thread that initially locked the resource
-    if(lockedThread == currThread)
+    if(lockedThread == get_currThread())
       countLock++; //Increase the locked count
   }
   else //resource is unlocked
   {
     if(lock_acquire(threadlock)) //Try to get a lock
     {
-      lockedThread = currThread; //Set the locking thread to this thread
+      lockedThread = get_currThread(); //Set the locking thread to this thread
       countLock = 1; //Set the initial lock count to 1
       ret = 1;
     }
@@ -31,7 +31,7 @@ unsigned lock(unsigned *threadlock)
 void unlock(unsigned *threadlock)
 {
   //check to see if the thread is the original locker
-  if(lockedThread == currThread)
+  if(lockedThread == get_currThread())
     countLock--; //reduce the count
   if(!countLock) //if count is 0, unlock the resource
     lock_release(threadlock);

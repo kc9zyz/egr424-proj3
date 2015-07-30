@@ -1,6 +1,7 @@
 #ifndef _SCHEDULER_H_
 #define _SCHEDULER_H_
-#define PRIV_TEST
+//privilege test definition
+// #define PRIV_TEST
 extern unsigned uartlock;
 extern void lock_init(unsigned *lock);
 extern unsigned lock_acquire(unsigned *lock);

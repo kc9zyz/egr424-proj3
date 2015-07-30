@@ -4,20 +4,20 @@
 //
 // Copyright (c) 2007-2010 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
-// 
+//
 // Texas Instruments (TI) is supplying this software for use solely and
 // exclusively on TI's microcontroller products. The software is owned by
 // TI and/or its suppliers, and is protected under applicable copyright
 // laws. You may not combine this software with "viral" open-source
 // software in order to form a larger program.
-// 
+//
 // THIS SOFTWARE IS PROVIDED "AS IS" AND WITH ALL FAULTS.
 // NO WARRANTIES, WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT
 // NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
 // A PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. TI SHALL NOT, UNDER ANY
 // CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL, OR CONSEQUENTIAL
 // DAMAGES, FOR ANY REASON WHATSOEVER.
-// 
+//
 // This is part of revision 5961 of the EK-LM3S6965 Firmware Package.
 //
 //*****************************************************************************
@@ -113,102 +113,102 @@ static const unsigned char g_pucRIT128x96x4HorizontalInc[] = { 0xA0, 0x52 };
 //*****************************************************************************
 static const unsigned char g_pucFont[96][5] =
 {
-    { 0x00, 0x00, 0x00, 0x00, 0x00 }, // " "
-    { 0x00, 0x00, 0x4f, 0x00, 0x00 }, // !
-    { 0x00, 0x07, 0x00, 0x07, 0x00 }, // "
-    { 0x14, 0x7f, 0x14, 0x7f, 0x14 }, // #
-    { 0x24, 0x2a, 0x7f, 0x2a, 0x12 }, // $
-    { 0x23, 0x13, 0x08, 0x64, 0x62 }, // %
-    { 0x36, 0x49, 0x55, 0x22, 0x50 }, // &
-    { 0x00, 0x05, 0x03, 0x00, 0x00 }, // '
-    { 0x00, 0x1c, 0x22, 0x41, 0x00 }, // (
-    { 0x00, 0x41, 0x22, 0x1c, 0x00 }, // )
-    { 0x14, 0x08, 0x3e, 0x08, 0x14 }, // *
-    { 0x08, 0x08, 0x3e, 0x08, 0x08 }, // +
-    { 0x00, 0x50, 0x30, 0x00, 0x00 }, // ,
-    { 0x08, 0x08, 0x08, 0x08, 0x08 }, // -
-    { 0x00, 0x60, 0x60, 0x00, 0x00 }, // .
-    { 0x20, 0x10, 0x08, 0x04, 0x02 }, // /
-    { 0x3e, 0x51, 0x49, 0x45, 0x3e }, // 0
-    { 0x00, 0x42, 0x7f, 0x40, 0x00 }, // 1
-    { 0x42, 0x61, 0x51, 0x49, 0x46 }, // 2
-    { 0x21, 0x41, 0x45, 0x4b, 0x31 }, // 3
-    { 0x18, 0x14, 0x12, 0x7f, 0x10 }, // 4
-    { 0x27, 0x45, 0x45, 0x45, 0x39 }, // 5
-    { 0x3c, 0x4a, 0x49, 0x49, 0x30 }, // 6
-    { 0x01, 0x71, 0x09, 0x05, 0x03 }, // 7
-    { 0x36, 0x49, 0x49, 0x49, 0x36 }, // 8
-    { 0x06, 0x49, 0x49, 0x29, 0x1e }, // 9
-    { 0x00, 0x36, 0x36, 0x00, 0x00 }, // :
-    { 0x00, 0x56, 0x36, 0x00, 0x00 }, // ;
-    { 0x08, 0x14, 0x22, 0x41, 0x00 }, // <
-    { 0x14, 0x14, 0x14, 0x14, 0x14 }, // =
-    { 0x00, 0x41, 0x22, 0x14, 0x08 }, // >
-    { 0x02, 0x01, 0x51, 0x09, 0x06 }, // ?
-    { 0x32, 0x49, 0x79, 0x41, 0x3e }, // @
-    { 0x7e, 0x11, 0x11, 0x11, 0x7e }, // A
-    { 0x7f, 0x49, 0x49, 0x49, 0x36 }, // B
-    { 0x3e, 0x41, 0x41, 0x41, 0x22 }, // C
-    { 0x7f, 0x41, 0x41, 0x22, 0x1c }, // D
-    { 0x7f, 0x49, 0x49, 0x49, 0x41 }, // E
-    { 0x7f, 0x09, 0x09, 0x09, 0x01 }, // F
-    { 0x3e, 0x41, 0x49, 0x49, 0x7a }, // G
-    { 0x7f, 0x08, 0x08, 0x08, 0x7f }, // H
-    { 0x00, 0x41, 0x7f, 0x41, 0x00 }, // I
-    { 0x20, 0x40, 0x41, 0x3f, 0x01 }, // J
-    { 0x7f, 0x08, 0x14, 0x22, 0x41 }, // K
-    { 0x7f, 0x40, 0x40, 0x40, 0x40 }, // L
-    { 0x7f, 0x02, 0x0c, 0x02, 0x7f }, // M
-    { 0x7f, 0x04, 0x08, 0x10, 0x7f }, // N
-    { 0x3e, 0x41, 0x41, 0x41, 0x3e }, // O
-    { 0x7f, 0x09, 0x09, 0x09, 0x06 }, // P
-    { 0x3e, 0x41, 0x51, 0x21, 0x5e }, // Q
-    { 0x7f, 0x09, 0x19, 0x29, 0x46 }, // R
-    { 0x46, 0x49, 0x49, 0x49, 0x31 }, // S
-    { 0x01, 0x01, 0x7f, 0x01, 0x01 }, // T
-    { 0x3f, 0x40, 0x40, 0x40, 0x3f }, // U
-    { 0x1f, 0x20, 0x40, 0x20, 0x1f }, // V
-    { 0x3f, 0x40, 0x38, 0x40, 0x3f }, // W
-    { 0x63, 0x14, 0x08, 0x14, 0x63 }, // X
-    { 0x07, 0x08, 0x70, 0x08, 0x07 }, // Y
-    { 0x61, 0x51, 0x49, 0x45, 0x43 }, // Z
-    { 0x00, 0x7f, 0x41, 0x41, 0x00 }, // [
-    { 0x02, 0x04, 0x08, 0x10, 0x20 }, // "\"
-    { 0x00, 0x41, 0x41, 0x7f, 0x00 }, // ]
-    { 0x04, 0x02, 0x01, 0x02, 0x04 }, // ^
-    { 0x40, 0x40, 0x40, 0x40, 0x40 }, // _
-    { 0x00, 0x01, 0x02, 0x04, 0x00 }, // `
-    { 0x20, 0x54, 0x54, 0x54, 0x78 }, // a
-    { 0x7f, 0x48, 0x44, 0x44, 0x38 }, // b
-    { 0x38, 0x44, 0x44, 0x44, 0x20 }, // c
-    { 0x38, 0x44, 0x44, 0x48, 0x7f }, // d
-    { 0x38, 0x54, 0x54, 0x54, 0x18 }, // e
-    { 0x08, 0x7e, 0x09, 0x01, 0x02 }, // f
-    { 0x0c, 0x52, 0x52, 0x52, 0x3e }, // g
-    { 0x7f, 0x08, 0x04, 0x04, 0x78 }, // h
-    { 0x00, 0x44, 0x7d, 0x40, 0x00 }, // i
-    { 0x20, 0x40, 0x44, 0x3d, 0x00 }, // j
-    { 0x7f, 0x10, 0x28, 0x44, 0x00 }, // k
-    { 0x00, 0x41, 0x7f, 0x40, 0x00 }, // l
-    { 0x7c, 0x04, 0x18, 0x04, 0x78 }, // m
-    { 0x7c, 0x08, 0x04, 0x04, 0x78 }, // n
-    { 0x38, 0x44, 0x44, 0x44, 0x38 }, // o
-    { 0x7c, 0x14, 0x14, 0x14, 0x08 }, // p
-    { 0x08, 0x14, 0x14, 0x18, 0x7c }, // q
-    { 0x7c, 0x08, 0x04, 0x04, 0x08 }, // r
-    { 0x48, 0x54, 0x54, 0x54, 0x20 }, // s
-    { 0x04, 0x3f, 0x44, 0x40, 0x20 }, // t
-    { 0x3c, 0x40, 0x40, 0x20, 0x7c }, // u
-    { 0x1c, 0x20, 0x40, 0x20, 0x1c }, // v
-    { 0x3c, 0x40, 0x30, 0x40, 0x3c }, // w
-    { 0x44, 0x28, 0x10, 0x28, 0x44 }, // x
-    { 0x0c, 0x50, 0x50, 0x50, 0x3c }, // y
-    { 0x44, 0x64, 0x54, 0x4c, 0x44 }, // z
-    { 0x00, 0x08, 0x36, 0x41, 0x00 }, // {
-    { 0x00, 0x00, 0x7f, 0x00, 0x00 }, // |
-    { 0x00, 0x41, 0x36, 0x08, 0x00 }, // }
-    { 0x02, 0x01, 0x02, 0x04, 0x02 }, // ~
-    { 0x00, 0x00, 0x00, 0x00, 0x00 }
+        { 0x00, 0x00, 0x00, 0x00, 0x00 }, // " "
+        { 0x00, 0x00, 0x4f, 0x00, 0x00 }, // !
+        { 0x00, 0x07, 0x00, 0x07, 0x00 }, // "
+        { 0x14, 0x7f, 0x14, 0x7f, 0x14 }, // #
+        { 0x24, 0x2a, 0x7f, 0x2a, 0x12 }, // $
+        { 0x23, 0x13, 0x08, 0x64, 0x62 }, // %
+        { 0x36, 0x49, 0x55, 0x22, 0x50 }, // &
+        { 0x00, 0x05, 0x03, 0x00, 0x00 }, // '
+        { 0x00, 0x1c, 0x22, 0x41, 0x00 }, // (
+        { 0x00, 0x41, 0x22, 0x1c, 0x00 }, // )
+        { 0x14, 0x08, 0x3e, 0x08, 0x14 }, // *
+        { 0x08, 0x08, 0x3e, 0x08, 0x08 }, // +
+        { 0x00, 0x50, 0x30, 0x00, 0x00 }, // ,
+        { 0x08, 0x08, 0x08, 0x08, 0x08 }, // -
+        { 0x00, 0x60, 0x60, 0x00, 0x00 }, // .
+        { 0x20, 0x10, 0x08, 0x04, 0x02 }, // /
+        { 0x3e, 0x51, 0x49, 0x45, 0x3e }, // 0
+        { 0x00, 0x42, 0x7f, 0x40, 0x00 }, // 1
+        { 0x42, 0x61, 0x51, 0x49, 0x46 }, // 2
+        { 0x21, 0x41, 0x45, 0x4b, 0x31 }, // 3
+        { 0x18, 0x14, 0x12, 0x7f, 0x10 }, // 4
+        { 0x27, 0x45, 0x45, 0x45, 0x39 }, // 5
+        { 0x3c, 0x4a, 0x49, 0x49, 0x30 }, // 6
+        { 0x01, 0x71, 0x09, 0x05, 0x03 }, // 7
+        { 0x36, 0x49, 0x49, 0x49, 0x36 }, // 8
+        { 0x06, 0x49, 0x49, 0x29, 0x1e }, // 9
+        { 0x00, 0x36, 0x36, 0x00, 0x00 }, // :
+        { 0x00, 0x56, 0x36, 0x00, 0x00 }, // ;
+        { 0x08, 0x14, 0x22, 0x41, 0x00 }, // <
+        { 0x14, 0x14, 0x14, 0x14, 0x14 }, // =
+        { 0x00, 0x41, 0x22, 0x14, 0x08 }, // >
+        { 0x02, 0x01, 0x51, 0x09, 0x06 }, // ?
+        { 0x32, 0x49, 0x79, 0x41, 0x3e }, // @
+        { 0x7e, 0x11, 0x11, 0x11, 0x7e }, // A
+        { 0x7f, 0x49, 0x49, 0x49, 0x36 }, // B
+        { 0x3e, 0x41, 0x41, 0x41, 0x22 }, // C
+        { 0x7f, 0x41, 0x41, 0x22, 0x1c }, // D
+        { 0x7f, 0x49, 0x49, 0x49, 0x41 }, // E
+        { 0x7f, 0x09, 0x09, 0x09, 0x01 }, // F
+        { 0x3e, 0x41, 0x49, 0x49, 0x7a }, // G
+        { 0x7f, 0x08, 0x08, 0x08, 0x7f }, // H
+        { 0x00, 0x41, 0x7f, 0x41, 0x00 }, // I
+        { 0x20, 0x40, 0x41, 0x3f, 0x01 }, // J
+        { 0x7f, 0x08, 0x14, 0x22, 0x41 }, // K
+        { 0x7f, 0x40, 0x40, 0x40, 0x40 }, // L
+        { 0x7f, 0x02, 0x0c, 0x02, 0x7f }, // M
+        { 0x7f, 0x04, 0x08, 0x10, 0x7f }, // N
+        { 0x3e, 0x41, 0x41, 0x41, 0x3e }, // O
+        { 0x7f, 0x09, 0x09, 0x09, 0x06 }, // P
+        { 0x3e, 0x41, 0x51, 0x21, 0x5e }, // Q
+        { 0x7f, 0x09, 0x19, 0x29, 0x46 }, // R
+        { 0x46, 0x49, 0x49, 0x49, 0x31 }, // S
+        { 0x01, 0x01, 0x7f, 0x01, 0x01 }, // T
+        { 0x3f, 0x40, 0x40, 0x40, 0x3f }, // U
+        { 0x1f, 0x20, 0x40, 0x20, 0x1f }, // V
+        { 0x3f, 0x40, 0x38, 0x40, 0x3f }, // W
+        { 0x63, 0x14, 0x08, 0x14, 0x63 }, // X
+        { 0x07, 0x08, 0x70, 0x08, 0x07 }, // Y
+        { 0x61, 0x51, 0x49, 0x45, 0x43 }, // Z
+        { 0x00, 0x7f, 0x41, 0x41, 0x00 }, // [
+        { 0x02, 0x04, 0x08, 0x10, 0x20 }, // "\"
+        { 0x00, 0x41, 0x41, 0x7f, 0x00 }, // ]
+        { 0x04, 0x02, 0x01, 0x02, 0x04 }, // ^
+        { 0x40, 0x40, 0x40, 0x40, 0x40 }, // _
+        { 0x00, 0x01, 0x02, 0x04, 0x00 }, // `
+        { 0x20, 0x54, 0x54, 0x54, 0x78 }, // a
+        { 0x7f, 0x48, 0x44, 0x44, 0x38 }, // b
+        { 0x38, 0x44, 0x44, 0x44, 0x20 }, // c
+        { 0x38, 0x44, 0x44, 0x48, 0x7f }, // d
+        { 0x38, 0x54, 0x54, 0x54, 0x18 }, // e
+        { 0x08, 0x7e, 0x09, 0x01, 0x02 }, // f
+        { 0x0c, 0x52, 0x52, 0x52, 0x3e }, // g
+        { 0x7f, 0x08, 0x04, 0x04, 0x78 }, // h
+        { 0x00, 0x44, 0x7d, 0x40, 0x00 }, // i
+        { 0x20, 0x40, 0x44, 0x3d, 0x00 }, // j
+        { 0x7f, 0x10, 0x28, 0x44, 0x00 }, // k
+        { 0x00, 0x41, 0x7f, 0x40, 0x00 }, // l
+        { 0x7c, 0x04, 0x18, 0x04, 0x78 }, // m
+        { 0x7c, 0x08, 0x04, 0x04, 0x78 }, // n
+        { 0x38, 0x44, 0x44, 0x44, 0x38 }, // o
+        { 0x7c, 0x14, 0x14, 0x14, 0x08 }, // p
+        { 0x08, 0x14, 0x14, 0x18, 0x7c }, // q
+        { 0x7c, 0x08, 0x04, 0x04, 0x08 }, // r
+        { 0x48, 0x54, 0x54, 0x54, 0x20 }, // s
+        { 0x04, 0x3f, 0x44, 0x40, 0x20 }, // t
+        { 0x3c, 0x40, 0x40, 0x20, 0x7c }, // u
+        { 0x1c, 0x20, 0x40, 0x20, 0x1c }, // v
+        { 0x3c, 0x40, 0x30, 0x40, 0x3c }, // w
+        { 0x44, 0x28, 0x10, 0x28, 0x44 }, // x
+        { 0x0c, 0x50, 0x50, 0x50, 0x3c }, // y
+        { 0x44, 0x64, 0x54, 0x4c, 0x44 }, // z
+        { 0x00, 0x08, 0x36, 0x41, 0x00 }, // {
+        { 0x00, 0x00, 0x7f, 0x00, 0x00 }, // |
+        { 0x00, 0x41, 0x36, 0x08, 0x00 }, // }
+        { 0x02, 0x01, 0x02, 0x04, 0x02 }, // ~
+        { 0x00, 0x00, 0x00, 0x00, 0x00 }
 };
 
 //*****************************************************************************
@@ -222,93 +222,93 @@ static const unsigned char g_pucFont[96][5] =
 //*****************************************************************************
 static const unsigned char g_pucRIT128x96x4Init[] =
 {
-    //
-    // Unlock commands
-    //
-    3, 0xFD, 0x12, 0xe3,
+        //
+        // Unlock commands
+        //
+        3, 0xFD, 0x12, 0xe3,
 
-    //
-    // Display off
-    //
-    2, 0xAE, 0xe3,
+        //
+        // Display off
+        //
+        2, 0xAE, 0xe3,
 
-    //
-    // Icon off
-    //
-    3, 0x94, 0, 0xe3,
+        //
+        // Icon off
+        //
+        3, 0x94, 0, 0xe3,
 
-    //
-    // Multiplex ratio
-    //
-    3, 0xA8, 95, 0xe3,
+        //
+        // Multiplex ratio
+        //
+        3, 0xA8, 95, 0xe3,
 
-    //
-    // Contrast
-    //
-    3, 0x81, 0xb7, 0xe3,
+        //
+        // Contrast
+        //
+        3, 0x81, 0xb7, 0xe3,
 
-    //
-    // Pre-charge current
-    //
-    3, 0x82, 0x3f, 0xe3,
+        //
+        // Pre-charge current
+        //
+        3, 0x82, 0x3f, 0xe3,
 
-    //
-    // Display Re-map
-    //
-    3, 0xA0, RIT_INIT_REMAP, 0xe3,
+        //
+        // Display Re-map
+        //
+        3, 0xA0, RIT_INIT_REMAP, 0xe3,
 
-    //
-    // Display Start Line
-    //
-    3, 0xA1, 0, 0xe3,
+        //
+        // Display Start Line
+        //
+        3, 0xA1, 0, 0xe3,
 
-    //
-    // Display Offset
-    //
-    3, 0xA2, RIT_INIT_OFFSET, 0xe3,
+        //
+        // Display Offset
+        //
+        3, 0xA2, RIT_INIT_OFFSET, 0xe3,
 
-    //
-    // Display Mode Normal
-    //
-    2, 0xA4, 0xe3,
+        //
+        // Display Mode Normal
+        //
+        2, 0xA4, 0xe3,
 
-    //
-    // Phase Length
-    //
-    3, 0xB1, 0x11, 0xe3,
+        //
+        // Phase Length
+        //
+        3, 0xB1, 0x11, 0xe3,
 
-    //
-    // Frame frequency
-    //
-    3, 0xB2, 0x23, 0xe3,
+        //
+        // Frame frequency
+        //
+        3, 0xB2, 0x23, 0xe3,
 
-    //
-    // Front Clock Divider
-    //
-    3, 0xB3, 0xe2, 0xe3,
+        //
+        // Front Clock Divider
+        //
+        3, 0xB3, 0xe2, 0xe3,
 
-    //
-    // Set gray scale table.  App note uses default command:
-    // 2, 0xB7, 0xe3
-    // This gray scale attempts some gamma correction to reduce the
-    // the brightness of the low levels.
-    //
-    17, 0xB8, 1, 2, 3, 4, 5, 6, 8, 10, 12, 14, 16, 19, 22, 26, 30, 0xe3,
+        //
+        // Set gray scale table.  App note uses default command:
+        // 2, 0xB7, 0xe3
+        // This gray scale attempts some gamma correction to reduce the
+        // the brightness of the low levels.
+        //
+        17, 0xB8, 1, 2, 3, 4, 5, 6, 8, 10, 12, 14, 16, 19, 22, 26, 30, 0xe3,
 
-    //
-    // Second pre-charge period. App note uses value 0x04.
-    //
-    3, 0xBB, 0x01, 0xe3,
+        //
+        // Second pre-charge period. App note uses value 0x04.
+        //
+        3, 0xBB, 0x01, 0xe3,
 
-    //
-    // Pre-charge voltage
-    //
-    3, 0xBC, 0x3f, 0xe3,
+        //
+        // Pre-charge voltage
+        //
+        3, 0xBC, 0x3f, 0xe3,
 
-    //
-    // Display ON
-    //
-    2, 0xAF, 0xe3,
+        //
+        // Display ON
+        //
+        2, 0xAF, 0xe3,
 };
 
 //*****************************************************************************
@@ -326,41 +326,41 @@ static const unsigned char g_pucRIT128x96x4Init[] =
 static void
 RITWriteCommand(const unsigned char *pucBuffer, unsigned long ulCount)
 {
-    unsigned long ulTemp;
-
-    //
-    // Return if SSI port is not enabled for RIT display.
-    //
-    if(!g_bSSIEnabled)
-    {
-        return;
-    }
-
-    //
-    // Clear the command/control bit to enable command mode.
-    //
-    GPIOPinWrite(GPIO_OLEDDC_BASE, GPIO_OLEDDC_PIN, 0);
-
-    //
-    // Loop while there are more bytes left to be transferred.
-    //
-    while(ulCount != 0)
-    {
-        //
-        // Write the next byte to the controller.
-        //
-        SSIDataPut(SSI0_BASE, *pucBuffer++);
+        unsigned long ulTemp;
 
         //
-        // Dummy read to drain the fifo and time the GPIO signal.
+        // Return if SSI port is not enabled for RIT display.
         //
-        SSIDataGet(SSI0_BASE, &ulTemp);
+        if(!g_bSSIEnabled)
+        {
+                return;
+        }
 
         //
-        // Decrement the BYTE counter.
+        // Clear the command/control bit to enable command mode.
         //
-        ulCount--;
-    }
+        GPIOPinWrite(GPIO_OLEDDC_BASE, GPIO_OLEDDC_PIN, 0);
+
+        //
+        // Loop while there are more bytes left to be transferred.
+        //
+        while(ulCount != 0)
+        {
+                //
+                // Write the next byte to the controller.
+                //
+                SSIDataPut(SSI0_BASE, *pucBuffer++);
+
+                //
+                // Dummy read to drain the fifo and time the GPIO signal.
+                //
+                SSIDataGet(SSI0_BASE, &ulTemp);
+
+                //
+                // Decrement the BYTE counter.
+                //
+                ulCount--;
+        }
 }
 
 //*****************************************************************************
@@ -378,41 +378,41 @@ RITWriteCommand(const unsigned char *pucBuffer, unsigned long ulCount)
 static void
 RITWriteData(const unsigned char *pucBuffer, unsigned long ulCount)
 {
-    unsigned long ulTemp;
-
-    //
-    // Return if SSI port is not enabled for RIT display.
-    //
-    if(!g_bSSIEnabled)
-    {
-        return;
-    }
-
-    //
-    // Set the command/control bit to enable data mode.
-    //
-    GPIOPinWrite(GPIO_OLEDDC_BASE, GPIO_OLEDDC_PIN, GPIO_OLEDDC_PIN);
-
-    //
-    // Loop while there are more bytes left to be transferred.
-    //
-    while(ulCount != 0)
-    {
-        //
-        // Write the next byte to the controller.
-        //
-        SSIDataPut(SSI0_BASE, *pucBuffer++);
+        unsigned long ulTemp;
 
         //
-        // Dummy read to drain the fifo and time the GPIO signal.
+        // Return if SSI port is not enabled for RIT display.
         //
-        SSIDataGet(SSI0_BASE, &ulTemp);
+        if(!g_bSSIEnabled)
+        {
+                return;
+        }
 
         //
-        // Decrement the BYTE counter.
+        // Set the command/control bit to enable data mode.
         //
-        ulCount--;
-    }
+        GPIOPinWrite(GPIO_OLEDDC_BASE, GPIO_OLEDDC_PIN, GPIO_OLEDDC_PIN);
+
+        //
+        // Loop while there are more bytes left to be transferred.
+        //
+        while(ulCount != 0)
+        {
+                //
+                // Write the next byte to the controller.
+                //
+                SSIDataPut(SSI0_BASE, *pucBuffer++);
+
+                //
+                // Dummy read to drain the fifo and time the GPIO signal.
+                //
+                SSIDataGet(SSI0_BASE, &ulTemp);
+
+                //
+                // Decrement the BYTE counter.
+                //
+                ulCount--;
+        }
 }
 
 //*****************************************************************************
@@ -428,43 +428,43 @@ RITWriteData(const unsigned char *pucBuffer, unsigned long ulCount)
 void
 RIT128x96x4Clear(void)
 {
-    static const unsigned char pucCommand1[] = { 0x15, 0, 63 };
-    static const unsigned char pucCommand2[] = { 0x75, 0, 127 };
-    unsigned long ulRow, ulColumn;
+        static const unsigned char pucCommand1[] = { 0x15, 0, 63 };
+        static const unsigned char pucCommand2[] = { 0x75, 0, 127 };
+        unsigned long ulRow, ulColumn;
 
-    //
-    // Clear out the buffer used for sending bytes to the display.
-    //
-    *(unsigned long *)&g_pucBuffer[0] = 0;
-    *(unsigned long *)&g_pucBuffer[4] = 0;
-
-    //
-    // Set the window to fill the entire display.
-    //
-    RITWriteCommand(pucCommand1, sizeof(pucCommand1));
-    RITWriteCommand(pucCommand2, sizeof(pucCommand2));
-    RITWriteCommand(g_pucRIT128x96x4HorizontalInc,
-                    sizeof(g_pucRIT128x96x4HorizontalInc));
-
-    //
-    // Loop through the rows
-    //
-    for(ulRow = 0; ulRow < 96; ulRow++)
-    {
         //
-        // Loop through the columns.  Each byte is two pixels,
-        // and the buffer hold 8 bytes, so 16 pixels are cleared
-        // at a time.
+        // Clear out the buffer used for sending bytes to the display.
         //
-        for(ulColumn = 0; ulColumn < 128; ulColumn += 8 * 2)
+        *(unsigned long *)&g_pucBuffer[0] = 0;
+        *(unsigned long *)&g_pucBuffer[4] = 0;
+
+        //
+        // Set the window to fill the entire display.
+        //
+        RITWriteCommand(pucCommand1, sizeof(pucCommand1));
+        RITWriteCommand(pucCommand2, sizeof(pucCommand2));
+        RITWriteCommand(g_pucRIT128x96x4HorizontalInc,
+                        sizeof(g_pucRIT128x96x4HorizontalInc));
+
+        //
+        // Loop through the rows
+        //
+        for(ulRow = 0; ulRow < 96; ulRow++)
         {
-            //
-            // Write 8 clearing bytes to the display, which will
-            // clear 16 pixels across.
-            //
-            RITWriteData(g_pucBuffer, sizeof(g_pucBuffer));
+                //
+                // Loop through the columns.  Each byte is two pixels,
+                // and the buffer hold 8 bytes, so 16 pixels are cleared
+                // at a time.
+                //
+                for(ulColumn = 0; ulColumn < 128; ulColumn += 8 * 2)
+                {
+                        //
+                        // Write 8 clearing bytes to the display, which will
+                        // clear 16 pixels across.
+                        //
+                        RITWriteData(g_pucBuffer, sizeof(g_pucBuffer));
+                }
         }
-    }
 }
 
 //*****************************************************************************
@@ -500,89 +500,89 @@ void
 RIT128x96x4StringDraw(const char *pcStr, unsigned long ulX,
                       unsigned long ulY, unsigned char ucLevel)
 {
-    unsigned long ulIdx1, ulIdx2;
-    unsigned char ucTemp;
+        unsigned long ulIdx1, ulIdx2;
+        unsigned char ucTemp;
 
-    //
-    // Check the arguments.
-    //
-    ASSERT(ulX < 128);
-    ASSERT((ulX & 1) == 0);
-    ASSERT(ulY < 96);
-    ASSERT(ucLevel < 16);
-
-    //
-    // Setup a window starting at the specified column and row, ending
-    // at the right edge of the display and 8 rows down (single character row).
-    //
-    g_pucBuffer[0] = 0x15;
-    g_pucBuffer[1] = ulX / 2;
-    g_pucBuffer[2] = 63;
-    RITWriteCommand(g_pucBuffer, 3);
-    g_pucBuffer[0] = 0x75;
-    g_pucBuffer[1] = ulY;
-    g_pucBuffer[2] = ulY + 7;
-    RITWriteCommand(g_pucBuffer, 3);
-    RITWriteCommand(g_pucRIT128x96x4VerticalInc,
-                    sizeof(g_pucRIT128x96x4VerticalInc));
-
-    //
-    // Loop while there are more characters in the string.
-    //
-    while(*pcStr != 0)
-    {
         //
-        // Get a working copy of the current character and convert to an
-        // index into the character bit-map array.
+        // Check the arguments.
         //
-        ucTemp = *pcStr++ & 0x7f;
-        if(ucTemp < ' ')
+        ASSERT(ulX < 128);
+        ASSERT((ulX & 1) == 0);
+        ASSERT(ulY < 96);
+        ASSERT(ucLevel < 16);
+
+        //
+        // Setup a window starting at the specified column and row, ending
+        // at the right edge of the display and 8 rows down (single character row).
+        //
+        g_pucBuffer[0] = 0x15;
+        g_pucBuffer[1] = ulX / 2;
+        g_pucBuffer[2] = 63;
+        RITWriteCommand(g_pucBuffer, 3);
+        g_pucBuffer[0] = 0x75;
+        g_pucBuffer[1] = ulY;
+        g_pucBuffer[2] = ulY + 7;
+        RITWriteCommand(g_pucBuffer, 3);
+        RITWriteCommand(g_pucRIT128x96x4VerticalInc,
+                        sizeof(g_pucRIT128x96x4VerticalInc));
+
+        //
+        // Loop while there are more characters in the string.
+        //
+        while(*pcStr != 0)
         {
-            ucTemp = 0;
-        }
-        else
-        {
-            ucTemp -= ' ';
-        }
-
-        //
-        // Build and display the character buffer.
-        //
-        for(ulIdx1 = 0; ulIdx1 < 6; ulIdx1 += 2)
-        {
-            //
-            // Convert two columns of 1-bit font data into a single data
-            // byte column of 4-bit font data.
-            //
-            for(ulIdx2 = 0; ulIdx2 < 8; ulIdx2++)
-            {
-                g_pucBuffer[ulIdx2] = 0;
-                if(g_pucFont[ucTemp][ulIdx1] & (1 << ulIdx2))
+                //
+                // Get a working copy of the current character and convert to an
+                // index into the character bit-map array.
+                //
+                ucTemp = *pcStr++ & 0x7f;
+                if(ucTemp < ' ')
                 {
-                    g_pucBuffer[ulIdx2] = (ucLevel << 4) & 0xf0;
+                        ucTemp = 0;
                 }
-                if((ulIdx1 < 4) &&
-                   (g_pucFont[ucTemp][ulIdx1 + 1] & (1 << ulIdx2)))
+                else
                 {
-                    g_pucBuffer[ulIdx2] |= (ucLevel << 0) & 0x0f;
+                        ucTemp -= ' ';
                 }
-            }
 
-            //
-            // Send this byte column to the display.
-            //
-            RITWriteData(g_pucBuffer, 8);
-            ulX += 2;
+                //
+                // Build and display the character buffer.
+                //
+                for(ulIdx1 = 0; ulIdx1 < 6; ulIdx1 += 2)
+                {
+                        //
+                        // Convert two columns of 1-bit font data into a single data
+                        // byte column of 4-bit font data.
+                        //
+                        for(ulIdx2 = 0; ulIdx2 < 8; ulIdx2++)
+                        {
+                                g_pucBuffer[ulIdx2] = 0;
+                                if(g_pucFont[ucTemp][ulIdx1] & (1 << ulIdx2))
+                                {
+                                        g_pucBuffer[ulIdx2] = (ucLevel << 4) & 0xf0;
+                                }
+                                if((ulIdx1 < 4) &&
+                                   (g_pucFont[ucTemp][ulIdx1 + 1] & (1 << ulIdx2)))
+                                {
+                                        g_pucBuffer[ulIdx2] |= (ucLevel << 0) & 0x0f;
+                                }
+                        }
 
-            //
-            // Return if the right side of the display has been reached.
-            //
-            if(ulX == 128)
-            {
-                return;
-            }
+                        //
+                        // Send this byte column to the display.
+                        //
+                        RITWriteData(g_pucBuffer, 8);
+                        ulX += 2;
+
+                        //
+                        // Return if the right side of the display has been reached.
+                        //
+                        if(ulX == 128)
+                        {
+                                return;
+                        }
+                }
         }
-    }
 }
 
 //*****************************************************************************
@@ -651,46 +651,46 @@ RIT128x96x4ImageDraw(const unsigned char *pucImage, unsigned long ulX,
                      unsigned long ulY, unsigned long ulWidth,
                      unsigned long ulHeight)
 {
-    //
-    // Check the arguments.
-    //
-    ASSERT(ulX < 128);
-    ASSERT((ulX & 1) == 0);
-    ASSERT(ulY < 96);
-    ASSERT((ulX + ulWidth) <= 128);
-    ASSERT((ulY + ulHeight) <= 96);
-    ASSERT((ulWidth & 1) == 0);
-
-    //
-    // Setup a window starting at the specified column and row, and ending
-    // at the column + width and row+height.
-    //
-    g_pucBuffer[0] = 0x15;
-    g_pucBuffer[1] = ulX / 2;
-    g_pucBuffer[2] = (ulX + ulWidth - 2) / 2;
-    RITWriteCommand(g_pucBuffer, 3);
-    g_pucBuffer[0] = 0x75;
-    g_pucBuffer[1] = ulY;
-    g_pucBuffer[2] = ulY + ulHeight - 1;
-    RITWriteCommand(g_pucBuffer, 3);
-    RITWriteCommand(g_pucRIT128x96x4HorizontalInc,
-                    sizeof(g_pucRIT128x96x4HorizontalInc));
-
-    //
-    // Loop while there are more rows to display.
-    //
-    while(ulHeight--)
-    {
         //
-        // Write this row of image data.
+        // Check the arguments.
         //
-        RITWriteData(pucImage, (ulWidth / 2));
+        ASSERT(ulX < 128);
+        ASSERT((ulX & 1) == 0);
+        ASSERT(ulY < 96);
+        ASSERT((ulX + ulWidth) <= 128);
+        ASSERT((ulY + ulHeight) <= 96);
+        ASSERT((ulWidth & 1) == 0);
 
         //
-        // Advance to the next row of the image.
+        // Setup a window starting at the specified column and row, and ending
+        // at the column + width and row+height.
         //
-        pucImage += (ulWidth / 2);
-    }
+        g_pucBuffer[0] = 0x15;
+        g_pucBuffer[1] = ulX / 2;
+        g_pucBuffer[2] = (ulX + ulWidth - 2) / 2;
+        RITWriteCommand(g_pucBuffer, 3);
+        g_pucBuffer[0] = 0x75;
+        g_pucBuffer[1] = ulY;
+        g_pucBuffer[2] = ulY + ulHeight - 1;
+        RITWriteCommand(g_pucBuffer, 3);
+        RITWriteCommand(g_pucRIT128x96x4HorizontalInc,
+                        sizeof(g_pucRIT128x96x4HorizontalInc));
+
+        //
+        // Loop while there are more rows to display.
+        //
+        while(ulHeight--)
+        {
+                //
+                // Write this row of image data.
+                //
+                RITWriteData(pucImage, (ulWidth / 2));
+
+                //
+                // Advance to the next row of the image.
+                //
+                pucImage += (ulWidth / 2);
+        }
 }
 
 //*****************************************************************************
@@ -707,42 +707,42 @@ RIT128x96x4ImageDraw(const unsigned char *pucImage, unsigned long ulX,
 void
 RIT128x96x4Enable(unsigned long ulFrequency)
 {
-    unsigned long ulTemp;
+        unsigned long ulTemp;
 
-    //
-    // Disable the SSI port.
-    //
-    SSIDisable(SSI0_BASE);
+        //
+        // Disable the SSI port.
+        //
+        SSIDisable(SSI0_BASE);
 
-    //
-    // Configure the SSI0 port for master mode.
-    //
-    SSIConfigSetExpClk(SSI0_BASE, SysCtlClockGet(), SSI_FRF_MOTO_MODE_2,
-                       SSI_MODE_MASTER, ulFrequency, 8);
+        //
+        // Configure the SSI0 port for master mode.
+        //
+        SSIConfigSetExpClk(SSI0_BASE, SysCtlClockGet(), SSI_FRF_MOTO_MODE_2,
+                           SSI_MODE_MASTER, ulFrequency, 8);
 
-    //
-    // (Re)Enable SSI control of the FSS pin.
-    //
-    GPIOPinTypeSSI(GPIO_PORTA_BASE, GPIO_PIN_3);
-    GPIOPadConfigSet(GPIO_PORTA_BASE, GPIO_PIN_3, GPIO_STRENGTH_8MA,
-                     GPIO_PIN_TYPE_STD_WPU);
+        //
+        // (Re)Enable SSI control of the FSS pin.
+        //
+        GPIOPinTypeSSI(GPIO_PORTA_BASE, GPIO_PIN_3);
+        GPIOPadConfigSet(GPIO_PORTA_BASE, GPIO_PIN_3, GPIO_STRENGTH_8MA,
+                         GPIO_PIN_TYPE_STD_WPU);
 
-    //
-    // Enable the SSI port.
-    //
-    SSIEnable(SSI0_BASE);
+        //
+        // Enable the SSI port.
+        //
+        SSIEnable(SSI0_BASE);
 
-    //
-    // Drain the receive fifo.
-    //
-    while(SSIDataGetNonBlocking(SSI0_BASE, &ulTemp) != 0)
-    {
-    }
+        //
+        // Drain the receive fifo.
+        //
+        while(SSIDataGetNonBlocking(SSI0_BASE, &ulTemp) != 0)
+        {
+        }
 
-    //
-    // Indicate that the RIT driver can use the SSI Port.
-    //
-    g_bSSIEnabled = true;
+        //
+        // Indicate that the RIT driver can use the SSI Port.
+        //
+        g_bSSIEnabled = true;
 }
 
 //*****************************************************************************
@@ -757,32 +757,32 @@ RIT128x96x4Enable(unsigned long ulFrequency)
 void
 RIT128x96x4Disable(void)
 {
-    unsigned long ulTemp;
+        unsigned long ulTemp;
 
-    //
-    // Indicate that the RIT driver can no longer use the SSI Port.
-    //
-    g_bSSIEnabled = false;
+        //
+        // Indicate that the RIT driver can no longer use the SSI Port.
+        //
+        g_bSSIEnabled = false;
 
-    //
-    // Drain the receive fifo.
-    //
-    while(SSIDataGetNonBlocking(SSI0_BASE, &ulTemp) != 0)
-    {
-    }
+        //
+        // Drain the receive fifo.
+        //
+        while(SSIDataGetNonBlocking(SSI0_BASE, &ulTemp) != 0)
+        {
+        }
 
-    //
-    // Disable the SSI port.
-    //
-    SSIDisable(SSI0_BASE);
+        //
+        // Disable the SSI port.
+        //
+        SSIDisable(SSI0_BASE);
 
-    //
-    // Disable SSI control of the FSS pin.
-    //
-    GPIOPinTypeGPIOOutput(GPIO_PORTA_BASE, GPIO_PIN_3);
-    GPIOPadConfigSet(GPIO_PORTA_BASE, GPIO_PIN_3, GPIO_STRENGTH_8MA,
-                     GPIO_PIN_TYPE_STD_WPU);
-    GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_3, GPIO_PIN_3);
+        //
+        // Disable SSI control of the FSS pin.
+        //
+        GPIOPinTypeGPIOOutput(GPIO_PORTA_BASE, GPIO_PIN_3);
+        GPIOPadConfigSet(GPIO_PORTA_BASE, GPIO_PIN_3, GPIO_STRENGTH_8MA,
+                         GPIO_PIN_TYPE_STD_WPU);
+        GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_3, GPIO_PIN_3);
 }
 
 //*****************************************************************************
@@ -800,55 +800,55 @@ RIT128x96x4Disable(void)
 void
 RIT128x96x4Init(unsigned long ulFrequency)
 {
-    unsigned long ulIdx;
+        unsigned long ulIdx;
 
-    //
-    // Enable the SSI0 and GPIO port blocks as they are needed by this driver.
-    //
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_SSI0);
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIO_OLEDDC);
-
-    //
-    // Configure the SSI0CLK and SSIOTX pins for SSI operation.
-    //
-    GPIOPinTypeSSI(GPIO_PORTA_BASE, GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_5);
-    GPIOPadConfigSet(GPIO_PORTA_BASE, GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_5,
-                     GPIO_STRENGTH_8MA, GPIO_PIN_TYPE_STD_WPU);
-
-    //
-    // Configure the GPIO port pin used as a D/Cn signal for OLED device,
-    // and the port pin used to enable power to the OLED panel.
-    //
-    GPIOPinTypeGPIOOutput(GPIO_OLEDDC_BASE, GPIO_OLEDDC_PIN | GPIO_OLEDEN_PIN);
-    GPIOPadConfigSet(GPIO_OLEDDC_BASE, GPIO_OLEDDC_PIN | GPIO_OLEDEN_PIN,
-                     GPIO_STRENGTH_8MA, GPIO_PIN_TYPE_STD);
-    GPIOPinWrite(GPIO_OLEDDC_BASE, GPIO_OLEDDC_PIN | GPIO_OLEDEN_PIN,
-                 GPIO_OLEDDC_PIN | GPIO_OLEDEN_PIN);
-
-    //
-    // Configure and enable the SSI0 port for master mode.
-    //
-    RIT128x96x4Enable(ulFrequency);
-
-    //
-    // Clear the frame buffer.
-    //
-    RIT128x96x4Clear();
-
-    //
-    // Initialize the SSD1329 controller.  Loop through the initialization
-    // sequence array, sending each command "string" to the controller.
-    //
-    for(ulIdx = 0; ulIdx < sizeof(g_pucRIT128x96x4Init);
-        ulIdx += g_pucRIT128x96x4Init[ulIdx] + 1)
-    {
         //
-        // Send this command.
+        // Enable the SSI0 and GPIO port blocks as they are needed by this driver.
         //
-        RITWriteCommand(g_pucRIT128x96x4Init + ulIdx + 1,
-                        g_pucRIT128x96x4Init[ulIdx] - 1);
-    }
+        SysCtlPeripheralEnable(SYSCTL_PERIPH_SSI0);
+        SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
+        SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIO_OLEDDC);
+
+        //
+        // Configure the SSI0CLK and SSIOTX pins for SSI operation.
+        //
+        GPIOPinTypeSSI(GPIO_PORTA_BASE, GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_5);
+        GPIOPadConfigSet(GPIO_PORTA_BASE, GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_5,
+                         GPIO_STRENGTH_8MA, GPIO_PIN_TYPE_STD_WPU);
+
+        //
+        // Configure the GPIO port pin used as a D/Cn signal for OLED device,
+        // and the port pin used to enable power to the OLED panel.
+        //
+        GPIOPinTypeGPIOOutput(GPIO_OLEDDC_BASE, GPIO_OLEDDC_PIN | GPIO_OLEDEN_PIN);
+        GPIOPadConfigSet(GPIO_OLEDDC_BASE, GPIO_OLEDDC_PIN | GPIO_OLEDEN_PIN,
+                         GPIO_STRENGTH_8MA, GPIO_PIN_TYPE_STD);
+        GPIOPinWrite(GPIO_OLEDDC_BASE, GPIO_OLEDDC_PIN | GPIO_OLEDEN_PIN,
+                     GPIO_OLEDDC_PIN | GPIO_OLEDEN_PIN);
+
+        //
+        // Configure and enable the SSI0 port for master mode.
+        //
+        RIT128x96x4Enable(ulFrequency);
+
+        //
+        // Clear the frame buffer.
+        //
+        RIT128x96x4Clear();
+
+        //
+        // Initialize the SSD1329 controller.  Loop through the initialization
+        // sequence array, sending each command "string" to the controller.
+        //
+        for(ulIdx = 0; ulIdx < sizeof(g_pucRIT128x96x4Init);
+            ulIdx += g_pucRIT128x96x4Init[ulIdx] + 1)
+        {
+                //
+                // Send this command.
+                //
+                RITWriteCommand(g_pucRIT128x96x4Init + ulIdx + 1,
+                                g_pucRIT128x96x4Init[ulIdx] - 1);
+        }
 }
 
 //*****************************************************************************
@@ -864,21 +864,21 @@ RIT128x96x4Init(unsigned long ulFrequency)
 void
 RIT128x96x4DisplayOn(void)
 {
-    unsigned long ulIdx;
+        unsigned long ulIdx;
 
-    //
-    // Initialize the SSD1329 controller.  Loop through the initialization
-    // sequence array, sending each command "string" to the controller.
-    //
-    for(ulIdx = 0; ulIdx < sizeof(g_pucRIT128x96x4Init);
-        ulIdx += g_pucRIT128x96x4Init[ulIdx] + 1)
-    {
         //
-        // Send this command.
+        // Initialize the SSD1329 controller.  Loop through the initialization
+        // sequence array, sending each command "string" to the controller.
         //
-        RITWriteCommand(g_pucRIT128x96x4Init + ulIdx + 1,
-                        g_pucRIT128x96x4Init[ulIdx] - 1);
-    }
+        for(ulIdx = 0; ulIdx < sizeof(g_pucRIT128x96x4Init);
+            ulIdx += g_pucRIT128x96x4Init[ulIdx] + 1)
+        {
+                //
+                // Send this command.
+                //
+                RITWriteCommand(g_pucRIT128x96x4Init + ulIdx + 1,
+                                g_pucRIT128x96x4Init[ulIdx] - 1);
+        }
 }
 
 //*****************************************************************************
@@ -896,15 +896,15 @@ RIT128x96x4DisplayOn(void)
 void
 RIT128x96x4DisplayOff(void)
 {
-    static const unsigned char pucCommand1[] =
-    {
-        0xAE, 0xe3
-    };
+        static const unsigned char pucCommand1[] =
+        {
+                0xAE, 0xe3
+        };
 
-    //
-    // Put the display to sleep.
-    //
-    RITWriteCommand(pucCommand1, sizeof(pucCommand1));
+        //
+        // Put the display to sleep.
+        //
+        RITWriteCommand(pucCommand1, sizeof(pucCommand1));
 }
 
 //*****************************************************************************
